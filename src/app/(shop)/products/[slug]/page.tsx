@@ -2,8 +2,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { getProductBySlug } from "@/server/queries/product-queries";
+
+import { AddToCartButton } from "@/features/cart/add-to-cart-button";
+import { auth } from "../../../../../auth";
 
 type ProductDetailsPageProps = {
   params: Promise<{
@@ -30,6 +32,8 @@ export async function generateMetadata({ params }: ProductDetailsPageProps) {
 export default async function ProductDetailsPage({
   params,
 }: ProductDetailsPageProps) {
+  const session = await auth();
+
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
@@ -101,26 +105,28 @@ export default async function ProductDetailsPage({
           <div>
             <p className="mb-2 text-sm font-medium">Available Sizes</p>
             <div className="flex flex-wrap gap-2">
-              {[...new Set(product.variants.map((v) => v.size).filter(Boolean))].map(
-                (size) => (
-                  <Badge key={size} variant="outline">
-                    {size}
-                  </Badge>
-                )
-              )}
+              {[
+                ...new Set(product.variants.map((v) => v.size).filter(Boolean)),
+              ].map((size) => (
+                <Badge key={size} variant="outline">
+                  {size}
+                </Badge>
+              ))}
             </div>
           </div>
 
           <div>
             <p className="mb-2 text-sm font-medium">Available Colors</p>
             <div className="flex flex-wrap gap-2">
-              {[...new Set(product.variants.map((v) => v.color).filter(Boolean))].map(
-                (color) => (
-                  <Badge key={color} variant="secondary">
-                    {color}
-                  </Badge>
-                )
-              )}
+              {[
+                ...new Set(
+                  product.variants.map((v) => v.color).filter(Boolean),
+                ),
+              ].map((color) => (
+                <Badge key={color} variant="secondary">
+                  {color}
+                </Badge>
+              ))}
             </div>
           </div>
         </div>
@@ -129,9 +135,24 @@ export default async function ProductDetailsPage({
           Stock available: {availableStock}
         </p>
 
-        <Button className="mt-8 w-full" size="lg">
-          Add to Cart
-        </Button>
+        <div className="mt-8">
+          <AddToCartButton
+            isLoggedIn={Boolean(session?.user)}
+            product={{
+              id: product.id,
+              name: product.name,
+              slug: product.slug,
+              price: Number(product.price),
+              imageUrl: product.images[0]?.url,
+              variants: product.variants.map((variant) => ({
+                id: variant.id,
+                size: variant.size,
+                color: variant.color,
+                inventory: variant.inventory,
+              })),
+            }}
+          />
+        </div>
 
         <div className="mt-10 border-t pt-8">
           <h2 className="font-semibold">Description</h2>
