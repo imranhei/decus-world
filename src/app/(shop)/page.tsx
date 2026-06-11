@@ -2,10 +2,15 @@ import Link from "next/link";
 
 import { ProductGrid } from "@/components/product/product-grid";
 import { Button } from "@/components/ui/button";
+import { getActiveBanner } from "@/server/queries/banner-queries";
 import { getFeaturedProducts } from "@/server/queries/product-queries";
+import Image from "next/image";
 
 export default async function HomePage() {
-  const featuredProducts = await getFeaturedProducts();
+  const [featuredProducts, heroBanner] = await Promise.all([
+    getFeaturedProducts(),
+    getActiveBanner("HOME_HERO"),
+  ]);
 
   return (
     <main>
@@ -21,7 +26,8 @@ export default async function HomePage() {
             </h1>
 
             <p className="mt-6 max-w-xl text-lg text-zinc-300">
-              Discover modern clothing designed for comfort, quality, and timeless style.
+              Discover modern clothing designed for comfort, quality, and
+              timeless style.
             </p>
 
             <div className="mt-8 flex gap-3">
@@ -35,8 +41,20 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="rounded-3xl bg-white/10 p-8">
-            <div className="aspect-square rounded-3xl bg-white/10" />
+          <div className="relative overflow-hidden rounded-3xl bg-white/10">
+            <div className="relative aspect-square">
+              {heroBanner ? (
+                <Image
+                  src={heroBanner.imageUrl}
+                  alt={heroBanner.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              ) : (
+                <div className="h-full w-full bg-white/10" />
+              )}
+            </div>
           </div>
         </div>
       </section>

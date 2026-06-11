@@ -31,19 +31,40 @@ export async function getCurrentUserOrderByNumber(orderNumber: string) {
   });
 }
 
-export async function getAdminOrders() {
-  return prisma.order.findMany({
-    include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
+export async function getAdminOrders({
+  page = 1,
+  limit = 10,
+}: {
+  page?: number;
+  limit?: number;
+}) {
+  const skip = (page - 1) * limit;
+
+  const [orders, totalOrders] = await Promise.all([
+    prisma.order.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
         },
+        items: true,
       },
-      items: true,
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
+    }),
+
+    prisma.order.count(),
+  ]);
+
+  return {
+    orders,
+    totalOrders,
+    totalPages: Math.ceil(totalOrders / limit),
+    page,
+  };
 }
 
 export async function getAdminOrderByNumber(orderNumber: string) {

@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 
-import { auth } from "../../../../auth";
 import { CheckoutForm } from "@/features/checkout/checkout-form";
-import { getCurrentUserCart } from "@/server/queries/cart-queries";
 import { prisma } from "@/lib/prisma";
+import { getAppliedCoupon } from "@/server/actions/coupon-actions";
+import { getCurrentUserCart } from "@/server/queries/cart-queries";
+import { auth } from "../../../../auth";
 
 export const metadata = {
   title: "Checkout",
@@ -31,8 +32,10 @@ export default async function CheckoutPage() {
     return total + Number(item.product.price) * item.quantity;
   }, 0);
 
+  const appliedCoupon = await getAppliedCoupon(subtotal);
+  const discountTotal = appliedCoupon?.discount || 0;
   const shippingTotal = subtotal >= 3000 ? 0 : 100;
-  const total = subtotal + shippingTotal;
+  const total = subtotal + shippingTotal - discountTotal;
 
   return (
     <main className="mx-auto grid max-w-7xl gap-8 px-4 py-10 lg:grid-cols-[1fr_360px]">
@@ -82,6 +85,12 @@ export default async function CheckoutPage() {
           Payment method: Cash on Delivery
         </p>
       </aside>
+
+      {appliedCoupon ? (
+        <p className="mt-3 text-xs text-muted-foreground">
+          Coupon applied: {appliedCoupon.coupon.code}
+        </p>
+      ) : null}
     </main>
   );
 }

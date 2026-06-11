@@ -1,5 +1,15 @@
 import { prisma } from "@/lib/prisma";
 
+type GetProductsParams = {
+  search?: string;
+  category?: string;
+  sort?: string;
+  featured?: string;
+  newArrival?: string;
+  bestSeller?: string;
+  page?: string;
+};
+
 export async function getFeaturedProducts() {
   return prisma.product.findMany({
     where: {
@@ -25,22 +35,82 @@ export async function getFeaturedProducts() {
   });
 }
 
-export async function getProducts() {
-  return prisma.product.findMany({
-    where: {
-      status: "ACTIVE",
-    },
-    include: {
-      images: {
-        orderBy: { position: "asc" },
-        take: 1,
+export async function getProducts(params: GetProductsParams = {}) {
+  const page = Number(params.page || 1);
+  const limit = 12;
+  const skip = (page - 1) * limit;
+
+  const where = {
+    status: "ACTIVE" as const,
+
+    ...(params.search
+      ? {
+          OR: [
+            { name: { contains: params.search, mode: "insensitive" as const } },
+            {
+              description: {
+                contains: params.search,
+                mode: "insensitive" as const,
+              },
+            },
+            {
+              shortDescription: {
+                contains: params.search,
+                mode: "insensitive" as const,
+              },
+            },
+          ],
+        }
+      : {}),
+
+    ...(params.category
+      ? {
+          category: {
+            slug: params.category,
+          },
+        }
+      : {}),
+
+    ...(params.featured === "true" ? { isFeatured: true } : {}),
+    ...(params.newArrival === "true" ? { isNewArrival: true } : {}),
+    ...(params.bestSeller === "true" ? { isBestSeller: true } : {}),
+  };
+
+  const orderBy =
+    params.sort === "price-asc"
+      ? { price: "asc" as const }
+      : params.sort === "price-desc"
+        ? { price: "desc" as const }
+        : params.sort === "oldest"
+          ? { createdAt: "asc" as const }
+          : { createdAt: "desc" as const };
+
+  const [products, totalProducts] = await Promise.all([
+    prisma.product.findMany({
+      where,
+      include: {
+        images: {
+          orderBy: { position: "asc" },
+          take: 1,
+        },
+        category: true,
       },
-      category: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      orderBy,
+      skip,
+      take: limit,
+    }),
+
+    prisma.product.count({
+      where,
+    }),
+  ]);
+
+  return {
+    products,
+    totalProducts,
+    totalPages: Math.ceil(totalProducts / limit),
+    page,
+  };
 }
 
 export async function getProductBySlug(slug: string) {
@@ -75,6 +145,17 @@ export async function getProductBySlug(slug: string) {
           createdAt: "desc",
         },
       },
+    },
+  });
+}
+
+export async function getActiveCategories() {
+  return prisma.category.findMany({
+    where: {
+      isActive: true,
+    },
+    orderBy: {
+      name: "asc",
     },
   });
 }

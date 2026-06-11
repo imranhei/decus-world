@@ -1,11 +1,18 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-import { auth } from "../../../auth";
+import { calculateCouponDiscount } from "@/lib/coupon";
 import { prisma } from "@/lib/prisma";
 import { checkoutSchema } from "@/lib/validations/checkout";
+import { cookies } from "next/headers";
+import { auth } from "../../../auth";
+
+import {
+  sendAdminNewOrderEmail,
+  sendOrderConfirmationEmail,
+} from "@/server/services/email-service";
 
 function generateOrderNumber() {
   return `DW-${Date.now()}`;
@@ -60,8 +67,28 @@ export async function placeCashOnDeliveryOrderAction(values: unknown) {
     return total + Number(item.product.price) * item.quantity;
   }, 0);
 
+  const cookieStore = await cookies();
+  const couponCode = cookieStore.get("decus_coupon")?.value;
+
+  let coupon = null;
+  let discountTotal = 0;
+
+  if (couponCode) {
+    coupon = await prisma.coupon.findUnique({
+      where: {
+        code: couponCode,
+      },
+    });
+
+    if (coupon) {
+      discountTotal = calculateCouponDiscount({
+        coupon,
+        subtotal,
+      });
+    }
+  }
+
   const shippingTotal = subtotal >= 3000 ? 0 : 100;
-  const discountTotal = 0;
   const taxTotal = 0;
   const total = subtotal + shippingTotal - discountTotal + taxTotal;
 
@@ -80,6 +107,7 @@ export async function placeCashOnDeliveryOrderAction(values: unknown) {
         subtotal,
         shippingTotal,
         discountTotal,
+        couponId: coupon?.id || null,
         taxTotal,
         total,
 
@@ -120,6 +148,19 @@ export async function placeCashOnDeliveryOrderAction(values: unknown) {
       }
     }
 
+    if (coupon && discountTotal > 0) {
+      await tx.coupon.update({
+        where: {
+          id: coupon.id,
+        },
+        data: {
+          usedCount: {
+            increment: 1,
+          },
+        },
+      });
+    }
+
     await tx.cartItem.deleteMany({
       where: { userId: session.user.id },
     });
@@ -127,8 +168,27 @@ export async function placeCashOnDeliveryOrderAction(values: unknown) {
     return createdOrder;
   });
 
+  const emailPayload = {
+    orderNumber: order.orderNumber,
+    customerName: data.customerName,
+    customerEmail: data.customerEmail,
+    customerPhone: data.customerPhone,
+    total,
+    items: cartItems.map((item) => ({
+      name: item.product.name,
+      quantity: item.quantity,
+      total: Number(item.product.price) * item.quantity,
+    })),
+  };
+
+  await Promise.allSettled([
+    sendOrderConfirmationEmail(emailPayload),
+    sendAdminNewOrderEmail(emailPayload),
+  ]);
+
   revalidatePath("/cart");
   revalidatePath("/account/orders");
 
+  cookieStore.delete("decus_coupon");
   redirect(`/checkout/success?order=${order.orderNumber}`);
 }

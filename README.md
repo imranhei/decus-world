@@ -1,36 +1,352 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Decus World
 
-## Getting Started
+A modern, production-ready clothing eCommerce platform built with Next.js, TypeScript, PostgreSQL, Prisma, Auth.js, Tailwind CSS, and shadcn/ui.
 
-First, run the development server:
+Designed for scalability, performance, SEO, and maintainability, Decus World provides a complete online shopping experience for customers and a powerful admin dashboard for store management.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Features
+
+### Customer Features
+
+* User registration and login
+* Secure authentication with Auth.js
+* Role-based access control
+* Customer profile management
+* Product browsing and search
+* Category filtering
+* Product sorting
+* Wishlist management
+* Shopping cart
+* Guest cart support
+* Cart synchronization after login
+* Cash on Delivery checkout
+* Order history
+* Product reviews and ratings
+* Coupon and discount support
+* Responsive mobile-first design
+
+### Guest Features
+
+* Browse products
+* Search and filter products
+* Add items to cart
+* Wishlist redirect to login
+* Checkout after authentication
+
+### Admin Features
+
+* Dashboard analytics
+* Sales overview
+* Order management
+* Customer management
+* User role management
+* Product management
+* Category management
+* Inventory management
+* Coupon management
+* Banner management
+* Review moderation
+* Low stock monitoring
+* Order status updates
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* Next.js App Router
+* TypeScript
+* Tailwind CSS
+* shadcn/ui
+* TanStack Query
+* Zustand
+* React Hook Form
+* Zod
+
+### Backend
+
+* Next.js Route Handlers
+* Server Actions
+* PostgreSQL
+* Prisma ORM
+* Auth.js
+
+### Storage & Services
+
+* Cloudinary
+* Resend
+* Neon PostgreSQL
+
+### SEO
+
+* Metadata API
+* Open Graph
+* Twitter Cards
+* JSON-LD Structured Data
+* Sitemap.xml
+* Robots.txt
+
+---
+
+## Authentication
+
+The application uses Auth.js with Credentials Provider.
+
+Features include:
+
+* Secure password hashing using bcrypt
+* Session-based authentication
+* HttpOnly cookies
+* Role-based authorization
+* Protected admin routes
+* Protected customer account routes
+
+Supported roles:
+
+* ADMIN
+* STAFF
+* CUSTOMER
+* GUEST
+
+---
+
+## Product Management
+
+Products support:
+
+* Multiple images
+* Cloudinary image upload
+* Categories
+* Variants
+* Sizes
+* Colors
+* Inventory tracking
+* Featured products
+* New arrivals
+* Best sellers
+* SEO metadata
+
+---
+
+## Cart System
+
+The cart system supports:
+
+### Guest Cart
+
+* Stored locally with Zustand
+* Works without authentication
+
+### Customer Cart
+
+* Stored in PostgreSQL
+* Persistent across devices
+
+### Cart Sync
+
+When a guest logs in:
+
+* Guest cart automatically merges with database cart
+* Existing quantities are preserved
+* Duplicate items are combined
+
+---
+
+## Order Management
+
+Supported workflow:
+
+Customer Order
+
+```text
+Cart
+ → Checkout
+ → Cash on Delivery
+ → Order Created
+ → Confirmation Email
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Admin Workflow
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+Pending
+ → Processing
+ → Shipped
+ → Delivered
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Additional statuses:
 
-## Learn More
+* Cancelled
+* Returned
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Coupon System
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Supports:
 
-## Deploy on Vercel
+* Percentage discounts
+* Fixed discounts
+* Minimum order amount
+* Maximum discount amount
+* Usage limits
+* Active/Inactive status
+* Expiration dates
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Review System
+
+Customers can:
+
+* Submit product reviews
+* Submit ratings
+* View approved reviews
+
+Admins can:
+
+* Approve reviews
+* Reject reviews
+* Moderate content
+
+---
+
+## Banner Management
+
+Supports:
+
+* Cloudinary image uploads
+* Active/Inactive banners
+* Homepage hero banners
+* Promotional banners
+* Scheduled banners
+* CTA buttons
+* Multiple positions
+
+---
+
+## Email Notifications
+
+Powered by Resend.
+
+Supported emails:
+
+* Order confirmation
+* New order notification to admin
+
+Email notifications can be disabled using:
+
+```env
+EMAIL_NOTIFICATIONS_ENABLED=false
+```
+
+---
+
+## Project Structure
+
+```text
+src
+├── app
+├── components
+├── config
+├── emails
+├── features
+├── hooks
+├── lib
+├── server
+│   ├── actions
+│   ├── queries
+│   └── services
+├── store
+├── types
+└── utils
+```
+
+---
+
+## Environment Variables
+
+```env
+DATABASE_URL=
+
+AUTH_SECRET=
+AUTH_TRUST_HOST=true
+
+NEXT_PUBLIC_APP_URL=
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=
+ADMIN_ORDER_EMAIL=
+
+EMAIL_NOTIFICATIONS_ENABLED=true
+```
+
+---
+
+## Performance Optimizations
+
+* Server Components
+* Route-level data fetching
+* Server Actions
+* Prisma query optimization
+* Image optimization
+* Dynamic imports where necessary
+* Reusable UI components
+* Pagination
+* SEO-first architecture
+
+---
+
+## Security
+
+* HttpOnly cookies
+* Password hashing
+* Role-based access control
+* Protected admin actions
+* Server-side validation
+* Zod schema validation
+* Secure database queries
+* CSRF protection through Auth.js
+
+---
+
+## Deployment
+
+Recommended stack:
+
+* Vercel
+* Neon PostgreSQL
+* Cloudinary
+* Resend
+
+---
+
+## Future Roadmap
+
+* Stripe Payments
+* SSLCommerz
+* bKash
+* Nagad
+* Multi-vendor support
+* Product recommendations
+* Advanced analytics
+* Inventory forecasting
+* Multi-language support
+* Multi-currency support
+* PWA support
+
+---
+
+## License
+
+Private Project — Decus World.
+
+All rights reserved.

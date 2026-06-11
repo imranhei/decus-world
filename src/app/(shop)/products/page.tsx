@@ -1,24 +1,70 @@
 import { ProductGrid } from "@/components/product/product-grid";
-import { getProducts } from "@/server/queries/product-queries";
+import { Pagination } from "@/components/shared/pagination";
+import { ProductFilters } from "@/features/products/product-filters";
+import {
+  getActiveCategories,
+  getProducts,
+} from "@/server/queries/product-queries";
+
+import { JsonLd } from "@/components/seo/json-ld";
+import { siteConfig } from "@/config/site";
+import { createCollectionJsonLd } from "@/lib/seo";
 
 export const metadata = {
   title: "Products",
   description: "Shop premium clothing products.",
 };
 
-export default async function ProductsPage() {
-  const products = await getProducts();
+type ProductsPageProps = {
+  searchParams: Promise<{
+    search?: string;
+    category?: string;
+    sort?: string;
+    featured?: string;
+    newArrival?: string;
+    bestSeller?: string;
+    page?: string;
+  }>;
+};
+
+export default async function ProductsPage({
+  searchParams,
+}: ProductsPageProps) {
+  const params = await searchParams;
+
+  const [productResult, categories] = await Promise.all([
+    getProducts(params),
+    getActiveCategories(),
+  ]);
+
+  const collectionJsonLd = createCollectionJsonLd({
+    name: "Products",
+    description: "Shop premium clothing products.",
+    url: `${siteConfig.url}/products`,
+  });
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Products</h1>
-        <p className="mt-2 text-muted-foreground">
-          Explore our latest clothing collection.
-        </p>
-      </div>
+    <>
+      <JsonLd data={collectionJsonLd} />
+      <main className="mx-auto max-w-7xl px-4 py-10">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Products</h1>
+          <p className="mt-2 text-muted-foreground">
+            Showing {productResult.totalProducts} products.
+          </p>
+        </div>
 
-      <ProductGrid products={products} />
-    </main>
+        <ProductFilters categories={categories} />
+
+        <ProductGrid products={productResult.products} />
+
+        <Pagination
+          page={productResult.page}
+          totalPages={productResult.totalPages}
+          basePath="/products"
+          searchParams={params}
+        />
+      </main>
+    </>
   );
 }

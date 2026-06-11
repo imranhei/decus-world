@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   BarChart3,
   Boxes,
@@ -7,8 +6,10 @@ import {
   Package,
   Percent,
   ShoppingCart,
+  Star,
   Users,
 } from "lucide-react";
+import Link from "next/link";
 
 import { LogoutButton } from "@/components/shared/logout-button";
 
@@ -47,6 +48,11 @@ const adminLinks = [
     title: "Banners",
     href: "/admin/banners",
     icon: Image,
+  },
+  {
+    title: "Reviews",
+    href: "/admin/reviews",
+    icon: Star,
   },
   {
     title: "Reports",
