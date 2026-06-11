@@ -61,7 +61,7 @@ export function RegisterForm() {
             <Input name="password" type="password" placeholder="Minimum 8 characters" required />
           </div>
 
-          <Button className="w-full" disabled={isPending}>
+          <Button className="w-full" disabled={isPending} type="submit">
             {isPending ? "Creating account..." : "Create account"}
           </Button>
 
