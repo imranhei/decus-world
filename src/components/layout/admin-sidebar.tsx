@@ -131,7 +131,7 @@ export function AdminSidebar() {
       </nav>
 
       <div className="absolute bottom-6 left-4 right-4">
-        <LogoutButton />
+        <LogoutButton className="text-black" />
       </div>
     </aside>
     </>

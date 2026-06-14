@@ -5,9 +5,11 @@ import { LoginForm } from "@/features/auth/login-form";
 
 export default async function LoginPage() {
   const session = await auth();
-  console.log("Session:", session);
-  if (session?.user) {
+
+  if (session?.user.role === "ADMIN" || session?.user.role === "STAFF") {
     redirect("/admin/dashboard");
+  } else if (session?.user) {
+    redirect("/account/profile");
   }
 
   return (
