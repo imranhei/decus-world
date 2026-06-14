@@ -111,7 +111,7 @@ export function CheckoutForm({ defaultValues }: CheckoutFormProps) {
         </div>
       </div>
 
-      <Button disabled={isPending} className="w-full" size="lg">
+      <Button disabled={isPending} className="w-full" size="lg" type="submit">
         {isPending ? "Placing Order..." : "Place Cash on Delivery Order"}
       </Button>
     </form>

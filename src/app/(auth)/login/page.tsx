@@ -5,9 +5,9 @@ import { LoginForm } from "@/features/auth/login-form";
 
 export default async function LoginPage() {
   const session = await auth();
-
+  console.log("Session:", session);
   if (session?.user) {
-    redirect("/account/profile");
+    redirect("/admin/dashboard");
   }
 
   return (

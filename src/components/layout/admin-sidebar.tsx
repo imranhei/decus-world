@@ -1,17 +1,23 @@
+"use client";
+
 import {
   BarChart3,
   Boxes,
   Image,
   LayoutDashboard,
+  Menu,
   Package,
   Percent,
   ShoppingCart,
   Star,
   Users,
+  X,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { LogoutButton } from "@/components/shared/logout-button";
+import { useState } from "react";
 
 const adminLinks = [
   {
@@ -62,13 +68,46 @@ const adminLinks = [
 ];
 
 export function AdminSidebar() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
   return (
-    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-72 border-r bg-zinc-950 text-white lg:block">
-      <div className="flex h-16 items-center border-b border-white/10 px-6">
-        <Link href="/admin/dashboard" className="text-xl font-bold">
-          Decus Admin
-        </Link>
-      </div>
+    <>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setOpen(true)}
+        className="fixed left-4 top-4 z-50 rounded-md border bg-background p-2 lg:hidden"
+      >
+        <Menu className="size-4" />
+      </button>
+
+      {/* Overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+    <aside
+        className={`
+          fixed left-0 top-0 z-50 h-screen w-60 border-r bg-zinc-950 text-white
+          transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0
+        `}
+      >
+        <div className="flex h-16 items-center justify-between border-b border-white/10 px-6">
+          <Link href="/admin/dashboard" className="text-xl font-bold">
+            Decus World
+          </Link>
+
+          <button
+            onClick={() => setOpen(false)}
+            className="lg:hidden"
+          >
+            <X className="size-4" />
+          </button>
+        </div>
 
       <nav className="space-y-1 p-4">
         {adminLinks.map((item) => {
@@ -78,7 +117,11 @@ export function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-white/10 hover:text-white"
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium ${
+                pathname === item.href
+                  ? "border-l-2 border-blue-500 bg-white/10 text-white"
+                  : "border-l-2 border-transparent text-zinc-300 hover:bg-white/10 hover:text-white"
+              }`}
             >
               <Icon className="h-4 w-4" />
               {item.title}
@@ -91,5 +134,6 @@ export function AdminSidebar() {
         <LogoutButton />
       </div>
     </aside>
+    </>
   );
 }

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export async function ShopNavbar() {
   const session = await auth();
+  console.log("Session in Navbar:", session);
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
@@ -34,7 +35,7 @@ export async function ShopNavbar() {
           </Button>
 
           <Button variant="ghost" size="icon">
-            <Link href={session?.user ? "/account/profile" : "/login"}>
+            <Link href={session?.user ? session?.user.role === "ADMIN" ? "/admin/dashboard" : "/account/profile" : "/login"}>
               <User className="h-5 w-5" />
             </Link>
           </Button>

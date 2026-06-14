@@ -155,7 +155,7 @@ export function BannerForm({ banner }: BannerFormProps) {
         Active banner
       </label>
 
-      <Button disabled={isPending}>
+      <Button disabled={isPending} type="submit">
         {isPending
           ? "Saving..."
           : banner

@@ -122,7 +122,7 @@ export function CategoryForm({
         Active category
       </label>
 
-      <Button disabled={isPending}>
+      <Button disabled={isPending} type="submit">
         {isPending
           ? "Saving..."
           : category

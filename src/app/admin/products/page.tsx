@@ -101,7 +101,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                           await deleteProductAction(product.id);
                         }}
                       >
-                        <Button size="sm" variant="destructive">
+                        <Button size="sm" variant="destructive" type="submit">
                           Archive
                         </Button>
                       </form>

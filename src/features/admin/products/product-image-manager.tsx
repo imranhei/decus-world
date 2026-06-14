@@ -40,8 +40,9 @@ export function ProductImageManager({
 
       onChange(
         images.filter(
-          (item) => !(item.url === image.url && item.publicId === image.publicId)
-        )
+          (item) =>
+            !(item.url === image.url && item.publicId === image.publicId),
+        ),
       );
     });
   }
@@ -78,7 +79,12 @@ export function ProductImageManager({
         )}
       </CldUploadWidget>
 
-      <input type="hidden" name="images" value={JSON.stringify(images)} readOnly />
+      <input
+        type="hidden"
+        name="images"
+        value={JSON.stringify(images)}
+        readOnly
+      />
 
       {images.length ? (
         <div className="grid gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -91,6 +97,11 @@ export function ProductImageManager({
                 src={image.url}
                 alt="Product image"
                 fill
+                sizes="
+                        (max-width: 640px) 100vw,
+                        (max-width: 768px) 33vw,
+                        25vw
+                      "
                 className="object-cover"
               />
 

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { getActiveBanner } from "@/server/queries/banner-queries";
 import { getFeaturedProducts } from "@/server/queries/product-queries";
 import Image from "next/image";
-import hero_banner from "@/assets/hero_banner.png";
 
 export default async function HomePage() {
   const [featuredProducts, heroBanner] = await Promise.all([
@@ -46,8 +45,7 @@ export default async function HomePage() {
             <div className="relative aspect-square">
               {heroBanner ? (
                 <Image
-                  // src={heroBanner.imageUrl}
-                  src={hero_banner}
+                  src={heroBanner.imageUrl}
                   alt={heroBanner.title}
                   fill
                   className="object-cover"
