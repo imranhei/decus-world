@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 
 export async function ShopNavbar() {
   const session = await auth();
-  console.log("Session in Navbar:", session);
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">

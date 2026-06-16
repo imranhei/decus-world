@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTransition } from "react";
+import { useEffect, useRef, useTransition } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { ImagePlus, Loader2, X } from "lucide-react";
 
@@ -24,18 +24,38 @@ type CloudinaryUploadResult = {
 type ProductImageManagerProps = {
   images: ProductImageInput[];
   onChange: (images: ProductImageInput[]) => void;
+  isSaved?: boolean;
 };
 
 export function ProductImageManager({
   images,
   onChange,
+  isSaved = false,
 }: ProductImageManagerProps) {
   const [isPending, startTransition] = useTransition();
+
+  const uploadedPublicIdsRef = useRef<Set<string>>(new Set());
+  const savedRef = useRef(false);
+
+  useEffect(() => {
+  return () => {
+    if (isSaved) return;
+
+    uploadedPublicIdsRef.current.forEach((publicId) => {
+      void deleteCloudinaryImageAction(publicId);
+    });
+  };
+}, [isSaved]);
+
+  function markAsSaved() {
+    savedRef.current = true;
+  }
 
   function handleRemoveImage(image: ProductImageInput) {
     startTransition(async () => {
       if (image.publicId) {
         await deleteCloudinaryImageAction(image.publicId);
+        uploadedPublicIdsRef.current.delete(image.publicId);
       }
 
       onChange(
@@ -49,6 +69,13 @@ export function ProductImageManager({
 
   return (
     <div className="space-y-4">
+      <input
+        type="hidden"
+        name="__imageSaveMarker"
+        onChange={markAsSaved}
+        readOnly
+      />
+
       <CldUploadWidget
         uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
         options={{
@@ -97,11 +124,11 @@ export function ProductImageManager({
                 src={image.url}
                 alt="Product image"
                 fill
-                sizes="
-                        (max-width: 640px) 100vw,
-                        (max-width: 768px) 33vw,
-                        25vw
-                      "
+                // sizes="
+                //         (max-width: 640px) 100vw,
+                //         (max-width: 768px) 33vw,
+                //         25vw
+                //       "
                 className="object-cover"
               />
 

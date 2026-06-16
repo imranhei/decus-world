@@ -19,10 +19,12 @@ export default async function AccountLayout({
     <>
       <ShopNavbar />
 
-      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-8 md:grid-cols-[260px_1fr]">
-        <AccountSidebar />
+      <main className="mx-auto max-w-7xl px-4 py-8">
+        <div className="grid gap-6 md:grid-cols-[250px_1fr]">
+          <AccountSidebar />
 
-        <section>{children}</section>
+          <section className="min-w-0">{children}</section>
+        </div>
       </main>
     </>
   );

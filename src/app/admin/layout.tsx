@@ -24,7 +24,7 @@ export default async function AdminLayout({
       <AdminSidebar />
       <AdminTopbar />
 
-      <main className="p-4 lg:pl-64">
+      <main className="p-4 lg:pl-60">
         <div className="mx-auto max-w-7xl">{children}</div>
       </main>
     </div>

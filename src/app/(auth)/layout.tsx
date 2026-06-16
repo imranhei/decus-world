@@ -21,7 +21,7 @@ export default function AuthLayout({
           </p>
         </div>
 
-        <p className="text-sm text-zinc-400">© 2026 Decus World</p>
+        <p className="text-sm text-zinc-400">© {new Date().getFullYear()} Decus World</p>
       </section>
 
       <section className="flex flex-1 items-center justify-center bg-muted px-4">

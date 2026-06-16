@@ -1,7 +1,8 @@
+import { Toaster } from "@/components/ui/sonner";
+import { siteConfig } from "@/config/site";
+import { AppProvider } from "@/providers/app-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { AppProvider } from "@/providers/app-provider";
-import { siteConfig } from "@/config/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -50,8 +51,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <AppProvider>{children}</AppProvider>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

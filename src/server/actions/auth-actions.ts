@@ -59,11 +59,21 @@ export async function loginAction(values: unknown) {
 
   const { email, password } = validatedFields.data;
 
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: { role: true },
+  });
+
+  const redirectTo =
+    user?.role === "ADMIN" || user?.role === "STAFF"
+      ? "/admin/dashboard"
+      : "/account/profile";
+
   try {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/account/profile",
+      redirectTo,
     });
 
     return {
@@ -71,7 +81,16 @@ export async function loginAction(values: unknown) {
       message: "Logged in successfully",
     };
   } catch (error) {
-    if (error instanceof AuthError) {
+    const authError = error as Error & {
+      type?: string;
+      code?: string;
+      digest?: string;
+    };
+
+    if (
+      authError.type === "CredentialsSignin" ||
+      authError.code === "credentials"
+    ) {
       return {
         success: false,
         message: "Invalid email or password",

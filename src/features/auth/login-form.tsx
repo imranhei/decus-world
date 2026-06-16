@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { loginAction } from "@/server/actions/auth-actions";
 import { Button } from "@/components/ui/button";
@@ -10,22 +11,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
 export function LoginForm() {
-  const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  function handleSubmit(formData: FormData) {
-    setError("");
-
-    const values = {
-      email: formData.get("email"),
-      password: formData.get("password"),
-    };
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
     startTransition(async () => {
-      const result = await loginAction(values);
+      const result = await loginAction({ email, password });
 
       if (!result?.success) {
-        setError(result?.message || "Something went wrong");
+        toast.error(result?.message || "Invalid email or password");
       }
     });
   }
@@ -37,17 +34,27 @@ export function LoginForm() {
       </CardHeader>
 
       <CardContent>
-        <form action={handleSubmit} className="space-y-4">
-          {error ? <p className="text-sm text-red-500">{error}</p> : null}
-
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label>Email</Label>
-            <Input name="email" type="email" placeholder="admin@example.com" required />
+            <Input
+              type="email"
+              placeholder="admin@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
 
           <div className="space-y-2">
             <Label>Password</Label>
-            <Input name="password" type="password" placeholder="********" required />
+            <Input
+              type="password"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
 
           <Button className="w-full" disabled={isPending} type="submit">

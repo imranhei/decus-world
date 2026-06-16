@@ -10,6 +10,7 @@ import {
   Percent,
   ShoppingCart,
   Star,
+  User,
   Users,
   X,
 } from "lucide-react";
@@ -65,6 +66,11 @@ const adminLinks = [
     href: "/admin/reports",
     icon: BarChart3,
   },
+  {
+  title: "My Profile",
+  href: "/account/profile",
+  icon: User,
+},
 ];
 
 export function AdminSidebar() {

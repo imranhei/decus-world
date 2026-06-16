@@ -8,7 +8,10 @@ import type {
   ProductVariant,
 } from "@prisma/client";
 import { useState, useTransition } from "react";
-import { ProductImageManager, type ProductImageInput } from "./product-image-manager";
+import {
+  ProductImageManager,
+  type ProductImageInput,
+} from "./product-image-manager";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +32,7 @@ type ProductFormProps = {
 export function ProductForm({ categories, product }: ProductFormProps) {
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [isSaved, setIsSaved] = useState(false);
 
   const [images, setImages] = useState<ProductImageInput[]>(
     product?.images.map((image) => ({
@@ -62,11 +66,14 @@ export function ProductForm({ categories, product }: ProductFormProps) {
     };
 
     startTransition(async () => {
+      setIsSaved(true);
+
       const result = product
         ? await updateProductAction(product.id, values)
         : await createProductAction(values);
 
       if (result && !result.success) {
+        setIsSaved(false);
         setError(result.message);
       }
     });
@@ -188,7 +195,11 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
         <div className="space-y-2 md:col-span-2">
           <Label>Product Images</Label>
-          <ProductImageManager images={images} onChange={setImages} />
+          <ProductImageManager
+            images={images}
+            onChange={setImages}
+            isSaved={isSaved}
+          />
         </div>
 
         <div className="space-y-2">
