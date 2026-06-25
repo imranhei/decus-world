@@ -21,7 +21,7 @@ export default async function HomePage() {
               New Collection
             </p>
 
-            <h1 className="mt-4 max-w-2xl text-5xl font-bold tracking-tight lg:text-7xl">
+            <h1 className="font-inter mt-4 max-w-2xl text-5xl font-bold tracking-tight lg:text-7xl">
               Premium fashion for everyday confidence.
             </h1>
 

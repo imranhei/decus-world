@@ -11,6 +11,5 @@ export default defineConfig({
   },
   datasource: {
     url: env("DATABASE_URL"),
-    // url: process.env["DATABASE_URL"],  // Alternative way to access environment variables
   },
 });
