@@ -1,5 +1,7 @@
+import ShopFooter from "@/components/layout/shop-footer";
 import { auth } from "../../../auth";
 import { ShopNavbar } from "@/components/layout/shop-navbar";
+
 import { CartSync } from "@/features/cart/cart-sync";
 
 export default async function ShopLayout({
@@ -14,6 +16,7 @@ export default async function ShopLayout({
       <CartSync isLoggedIn={Boolean(session?.user)} />
       <ShopNavbar />
       {children}
+      <ShopFooter />
     </>
   );
 }

@@ -96,7 +96,7 @@ export function AdminSidebar() {
       )}
     <aside
         className={`
-          fixed left-0 top-0 z-50 h-screen w-60 border-r bg-zinc-950 text-white
+          fixed left-0 top-0 z-50 h-screen w-60 bg-zinc-950 text-white
           transition-transform duration-300
           ${open ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0
