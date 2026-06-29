@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
-import { FaFacebookF, FaFacebookMessenger, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaFacebookMessenger, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 export default function ShopFooter() {
   return (
@@ -122,10 +122,10 @@ export default function ShopFooter() {
               <div className="flex items-center gap-4">
                 <Phone className="shrink-0 text-[#C8A46A]" size={18} />
                 <a
-                  href="tel:+8801XXXXXXXXX"
+                  href="tel:+8801828013253"
                   className="transition-colors hover:text-[#C8A46A]"
                 >
-                  +880 1XXX-XXXXXX
+                  +8801828-013253
                 </a>
               </div>
               <div className="flex items-center gap-4">
@@ -141,7 +141,8 @@ export default function ShopFooter() {
               {/* Socials */}
               <div className="flex gap-3 pt-4">
                 <Link
-                  href="#"
+                  href="https://www.facebook.com/decusworld"
+                  target="_blank"
                   aria-label="Facebook"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-300 hover:border-transparent hover:bg-[#C8A46A] hover:text-black"
                 >
@@ -150,6 +151,7 @@ export default function ShopFooter() {
                 <Link
                   href="#"
                   aria-label="Instagram"
+                  target="_blank"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-300 hover:border-transparent hover:bg-[#C8A46A] hover:text-black"
                 >
                   <FaInstagram size={14} />
@@ -157,9 +159,18 @@ export default function ShopFooter() {
                 <Link
                   href="https://www.facebook.com/messages/t/61586243758034/"
                   aria-label="Messenger"
+                  target="_blank"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-300 hover:border-transparent hover:bg-[#C8A46A] hover:text-black"
                 >
                   <FaFacebookMessenger size={14} />
+                </Link>
+                <Link
+                  href="https://wa.me/+8801828013253"
+                  target="_blank"
+                  aria-label="WhatsApp"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-300 hover:border-transparent hover:bg-[#C8A46A] hover:text-black"
+                >
+                  <FaWhatsapp size={14} />
                 </Link>
               </div>
             </div>

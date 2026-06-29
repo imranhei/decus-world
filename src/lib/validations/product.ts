@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+export const productVariantSchema = z.object({
+  size: z.string().optional(),
+  color: z.string().optional(),
+  sku: z.string().optional(),
+  quantity: z.coerce.number().int().min(0),
+});
+
 export const productSchema = z.object({
   name: z.string().min(2),
   slug: z.string().min(2),
@@ -18,9 +25,7 @@ export const productSchema = z.object({
       })
     )
     .default([]),
-  sizes: z.string().optional(),
-  colors: z.string().optional(),
-  inventoryQuantity: z.coerce.number().int().min(0).default(0),
+  variants: z.array(productVariantSchema).min(1, "At least one variant is required"),
   isFeatured: z.coerce.boolean().default(false),
   isNewArrival: z.coerce.boolean().default(false),
   isBestSeller: z.coerce.boolean().default(false),

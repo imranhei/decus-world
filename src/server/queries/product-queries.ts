@@ -35,10 +35,33 @@ export async function getFeaturedProducts() {
   });
 }
 
+async function getCategoryIdsBySlug(slug?: string) {
+  if (!slug) return undefined;
+
+  const category = await prisma.category.findUnique({
+    where: {
+      slug,
+    },
+    include: {
+      children: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
+  if (!category) return [];
+
+  return [category.id, ...category.children.map((child) => child.id)];
+}
+
 export async function getProducts(params: GetProductsParams = {}) {
   const page = Number(params.page || 1);
   const limit = 12;
   const skip = (page - 1) * limit;
+
+  const categoryIds = await getCategoryIdsBySlug(params.category);
 
   const where = {
     status: "ACTIVE" as const,
@@ -46,7 +69,12 @@ export async function getProducts(params: GetProductsParams = {}) {
     ...(params.search
       ? {
           OR: [
-            { name: { contains: params.search, mode: "insensitive" as const } },
+            {
+              name: {
+                contains: params.search,
+                mode: "insensitive" as const,
+              },
+            },
             {
               description: {
                 contains: params.search,
@@ -63,10 +91,10 @@ export async function getProducts(params: GetProductsParams = {}) {
         }
       : {}),
 
-    ...(params.category
+    ...(categoryIds
       ? {
-          category: {
-            slug: params.category,
+          categoryId: {
+            in: categoryIds,
           },
         }
       : {}),
@@ -90,10 +118,18 @@ export async function getProducts(params: GetProductsParams = {}) {
       where,
       include: {
         images: {
-          orderBy: { position: "asc" },
+          orderBy: {
+            position: "asc",
+          },
           take: 1,
         },
         category: true,
+        variants: {
+          include: {
+            inventory: true,
+          },
+          take: 1,
+        },
       },
       orderBy,
       skip,

@@ -3,10 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { cloudinary } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { productSchema } from "@/lib/validations/product";
 import { auth } from "../../../auth";
-import { cloudinary } from "@/lib/cloudinary";
 
 async function requireAdmin() {
   const session = await auth();
@@ -30,34 +30,6 @@ function splitValues(value?: string) {
   );
 }
 
-function buildVariants({
-  slug,
-  sizes,
-  colors,
-  inventoryQuantity,
-}: {
-  slug: string;
-  sizes: string[];
-  colors: string[];
-  inventoryQuantity: number;
-}) {
-  const safeSizes = sizes.length ? sizes : ["Default"];
-  const safeColors = colors.length ? colors : ["Default"];
-
-  return safeSizes.flatMap((size) =>
-    safeColors.map((color) => ({
-      size,
-      color,
-      sku: `${slug}-${size}-${color}`.toUpperCase(),
-      inventory: {
-        create: {
-          quantity: inventoryQuantity,
-        },
-      },
-    })),
-  );
-}
-
 export async function createProductAction(values: unknown) {
   await requireAdmin();
 
@@ -68,9 +40,6 @@ export async function createProductAction(values: unknown) {
   }
 
   const data = parsed.data;
-
-  const sizes = splitValues(data.sizes);
-  const colors = splitValues(data.colors);
 
   await prisma.product.create({
     data: {
@@ -99,12 +68,20 @@ export async function createProductAction(values: unknown) {
       },
 
       variants: {
-        create: buildVariants({
-          slug: data.slug,
-          sizes,
-          colors,
-          inventoryQuantity: data.inventoryQuantity,
-        }),
+        create: data.variants.map((variant) => ({
+          size: variant.size || null,
+          color: variant.color || null,
+          sku:
+            variant.sku ||
+            `${data.slug}-${variant.size || "DEFAULT"}-${variant.color || "DEFAULT"}`
+              .toUpperCase()
+              .replace(/\s+/g, "-"),
+          inventory: {
+            create: {
+              quantity: variant.quantity,
+            },
+          },
+        })),
       },
     },
   });
@@ -124,9 +101,6 @@ export async function updateProductAction(productId: string, values: unknown) {
   }
 
   const data = parsed.data;
-
-  const sizes = splitValues(data.sizes);
-  const colors = splitValues(data.colors);
 
   await prisma.$transaction(async (tx) => {
     await tx.product.update({
@@ -167,24 +141,24 @@ export async function updateProductAction(productId: string, values: unknown) {
       where: { productId },
     });
 
-    for (const size of sizes) {
-      const variantColors = colors.length ? colors : [null];
-
-      for (const color of variantColors) {
-        await tx.productVariant.create({
-          data: {
-            productId,
-            size,
-            color,
-            sku: `${data.slug}-${size}-${color || "DEFAULT"}`.toUpperCase(),
-            inventory: {
-              create: {
-                quantity: data.inventoryQuantity,
-              },
+    for (const variant of data.variants) {
+      await tx.productVariant.create({
+        data: {
+          productId,
+          size: variant.size || null,
+          color: variant.color || null,
+          sku:
+            variant.sku ||
+            `${data.slug}-${variant.size || "DEFAULT"}-${variant.color || "DEFAULT"}`
+              .toUpperCase()
+              .replace(/\s+/g, "-"),
+          inventory: {
+            create: {
+              quantity: variant.quantity,
             },
           },
-        });
-      }
+        },
+      });
     }
   });
 

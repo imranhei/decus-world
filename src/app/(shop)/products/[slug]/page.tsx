@@ -1,19 +1,21 @@
+import SizeChart from "@/assets/size-chart.png";
+import { Heart, Ruler } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Heart, Ruler } from "lucide-react";
 
-import { auth } from "../../../../../auth";
-import { AddToCartButton } from "@/features/cart/add-to-cart-button";
-import { WishlistButton } from "@/features/wishlist/wishlist-button";
-import { isProductWishlisted } from "@/server/queries/wishlist-queries";
-import { getProductBySlug } from "@/server/queries/product-queries";
-import { StarRating } from "@/components/shared/star-rating";
 import { JsonLd } from "@/components/seo/json-ld";
-import { siteConfig } from "@/config/site";
-import { ReviewForm } from "@/features/reviews/review-form";
-import { createBreadcrumbJsonLd, createProductJsonLd } from "@/lib/seo";
+import { ImagePreviewDialog } from "@/components/shared/image-preview-dialog";
+import { StarRating } from "@/components/shared/star-rating";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
+import { AddToCartButton } from "@/features/cart/add-to-cart-button";
+import { ReviewForm } from "@/features/reviews/review-form";
+import { WishlistButton } from "@/features/wishlist/wishlist-button";
+import { createBreadcrumbJsonLd, createProductJsonLd } from "@/lib/seo";
+import { getProductBySlug } from "@/server/queries/product-queries";
+import { isProductWishlisted } from "@/server/queries/wishlist-queries";
+import { auth } from "../../../../../auth";
 
 type ProductDetailsPageProps = {
   params: Promise<{
@@ -74,7 +76,9 @@ export default async function ProductDetailsPage({
   ];
 
   const colors = [
-    ...new Set(product.variants.map((variant) => variant.color).filter(Boolean)),
+    ...new Set(
+      product.variants.map((variant) => variant.color).filter(Boolean),
+    ),
   ];
 
   const averageRating =
@@ -191,11 +195,12 @@ export default async function ProductDetailsPage({
                 </p>
               ) : null}
 
-              <span className="text-lg">+ VAT</span>
+              {/* <span className="text-lg">+ VAT</span> */}
             </div>
 
             <p className="mt-2 text-sm text-muted-foreground">
-              <span className="underline">Shipping</span> calculated at checkout.
+              <span className="underline">Shipping</span> calculated at
+              checkout.
             </p>
 
             <div className="mt-3 flex items-center gap-2">
@@ -249,14 +254,14 @@ export default async function ProductDetailsPage({
               </div>
             ) : null}
 
-            <Button
-              type="button"
-              variant="outline"
-              className="mt-6 h-12 w-48 rounded-none border-black"
-            >
-              <Ruler className="mr-2 h-4 w-4" />
-              Size Chart
-            </Button>
+            <ImagePreviewDialog
+              image={SizeChart}
+              title="Size Chart"
+              alt="Size chart"
+              buttonText="Size Chart"
+              icon={<Ruler className="mr-2 h-4 w-4" />}
+              buttonClassName="mt-6 h-12 w-48 rounded-none border-black"
+            />
 
             <div className="mt-5">
               <p className="mb-2 text-sm text-muted-foreground">Quantity</p>

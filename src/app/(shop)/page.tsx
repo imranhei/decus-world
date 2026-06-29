@@ -36,7 +36,7 @@ export default async function HomePage() {
               </Button>
 
               <Button size="lg" variant="outline" className="bg-zinc-500">
-                <Link href="/products?category=new">New Arrivals</Link>
+                <Link href="products?newArrival=true">New Arrivals</Link>
               </Button>
             </div>
           </div>

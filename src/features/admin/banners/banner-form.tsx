@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RequiredLabel } from "@/components/shared/required-label";
 
 type BannerFormProps = {
   banner?: Banner;
@@ -77,7 +78,7 @@ export function BannerForm({ banner }: BannerFormProps) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label>Title</Label>
+          <RequiredLabel>Title</RequiredLabel>
           <Input name="title" defaultValue={banner?.title || ""} required />
         </div>
 

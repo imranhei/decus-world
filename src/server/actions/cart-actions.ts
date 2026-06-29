@@ -116,6 +116,7 @@ export async function removeCartItemAction(cartItemId: string) {
 
   return {
     success: true,
+    message: "Item removed",
   };
 }
 
@@ -158,6 +159,7 @@ export async function updateCartItemQuantityAction({
 
   return {
     success: true,
+    message: "Cart updated",
   };
 }
 

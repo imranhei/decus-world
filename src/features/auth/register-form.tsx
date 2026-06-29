@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { RequiredLabel } from "@/components/shared/required-label";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -47,17 +48,17 @@ export function RegisterForm() {
           {error ? <p className="text-sm text-red-500">{error}</p> : null}
 
           <div className="space-y-2">
-            <Label>Name</Label>
+            <RequiredLabel>Name</RequiredLabel>
             <Input name="name" placeholder="Your name" required />
           </div>
 
           <div className="space-y-2">
-            <Label>Email</Label>
+            <RequiredLabel>Email</RequiredLabel>
             <Input name="email" type="email" placeholder="you@example.com" required />
           </div>
 
           <div className="space-y-2">
-            <Label>Password</Label>
+            <RequiredLabel>Password</RequiredLabel>
             <Input name="password" type="password" placeholder="Minimum 8 characters" required />
           </div>
 

@@ -1,12 +1,9 @@
-import { CouponForm } from "@/features/cart/coupon-form";
 import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import {
-  removeCartItemAction,
-  updateCartItemQuantityAction,
-} from "@/server/actions/cart-actions";
+import { CouponForm } from "@/features/cart/coupon-form";
+import { UserCartActions } from "@/features/cart/user-cart-actions";
 
 type UserCartViewProps = {
   items: Awaited<
@@ -33,6 +30,7 @@ export function UserCartView({ items, appliedCoupon }: UserCartViewProps) {
     return (
       <div className="rounded-xl border p-10 text-center">
         <h1 className="text-2xl font-bold">Your cart is empty</h1>
+
         <Button className="mt-6">
           <Link href="/products">Continue Shopping</Link>
         </Button>
@@ -45,7 +43,7 @@ export function UserCartView({ items, appliedCoupon }: UserCartViewProps) {
       <div className="space-y-4">
         {items.map((item) => (
           <div key={item.id} className="flex gap-4 rounded-xl border p-4">
-            <div className="relative h-24 w-20 overflow-hidden rounded-lg bg-muted">
+            <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-lg bg-muted">
               {item.product.images[0] ? (
                 <Image
                   src={item.product.images[0].url}
@@ -56,71 +54,28 @@ export function UserCartView({ items, appliedCoupon }: UserCartViewProps) {
               ) : null}
             </div>
 
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <Link
                 href={`/products/${item.product.slug}`}
-                className="font-semibold"
+                className="font-semibold hover:underline text-blue-600"
               >
                 {item.product.name}
               </Link>
 
               <p className="text-sm text-muted-foreground">
-                {item.variant?.size} / {item.variant?.color}
+                {item.variant?.size || "Default"}
+                {item.variant?.color ? ` / ${item.variant.color}` : ""}
               </p>
 
               <p className="mt-1 font-medium">৳{Number(item.product.price)}</p>
 
-              <div className="mt-3 flex items-center gap-2">
-                <form
-                  action={async () => {
-                    "use server";
-
-                    await updateCartItemQuantityAction({
-                      cartItemId: item.id,
-                      quantity: item.quantity - 1,
-                    });
-                  }}
-                >
-                  <Button size="sm" variant="outline">
-                    -
-                  </Button>
-                </form>
-
-                <span className="w-8 text-center">{item.quantity}</span>
-
-                <form
-                  action={async () => {
-                    "use server";
-
-                    await updateCartItemQuantityAction({
-                      cartItemId: item.id,
-                      quantity: item.quantity + 1,
-                    });
-                  }}
-                >
-                  <Button size="sm" variant="outline">
-                    +
-                  </Button>
-                </form>
-
-                <form
-                  action={async () => {
-                    "use server";
-
-                    await removeCartItemAction(item.id);
-                  }}
-                >
-                  <Button size="sm" variant="ghost">
-                    Remove
-                  </Button>
-                </form>
-              </div>
+              <UserCartActions cartItemId={item.id} quantity={item.quantity} />
             </div>
           </div>
         ))}
       </div>
 
-      <aside className="rounded-xl border p-6">
+      <aside className="h-fit rounded-xl border p-6">
         <h2 className="text-xl font-bold">Order Summary</h2>
 
         <div className="mt-6 space-y-3 text-sm">

@@ -7,6 +7,7 @@ import { updateProfileAction } from "@/server/actions/profile-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RequiredLabel } from "@/components/shared/required-label";
 
 type ProfileFormProps = {
   user: Pick<User, "name" | "email" | "phone" | "address" | "city" | "postalCode">;
@@ -42,7 +43,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label>Name</Label>
+          <RequiredLabel>Name</RequiredLabel>
           <Input name="name" defaultValue={user.name || ""} required />
         </div>
 

@@ -3,16 +3,19 @@ import { redirect } from "next/navigation";
 import { auth } from "../../../../auth";
 import { LoginForm } from "@/features/auth/login-form";
 
-export default async function LoginPage() {
-  const session = await auth();
+type LoginPageProps = {
+  searchParams: Promise<{
+    callbackUrl?: string;
+  }>;
+};
 
-  if (session?.user.role === "ADMIN" || session?.user.role === "STAFF") {
-    redirect("/admin/dashboard");
-  }
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const session = await auth();
+  const { callbackUrl } = await searchParams;
 
   if (session?.user) {
-    redirect("/account/profile");
+    redirect(callbackUrl || "/account/profile");
   }
 
-  return <LoginForm />
+  return <LoginForm callbackUrl={callbackUrl} />;
 }

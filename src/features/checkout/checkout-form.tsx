@@ -6,6 +6,7 @@ import { placeCashOnDeliveryOrderAction } from "@/server/actions/order-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RequiredLabel } from "@/components/shared/required-label";
 
 type CheckoutFormProps = {
   defaultValues: {
@@ -52,7 +53,7 @@ export function CheckoutForm({ defaultValues }: CheckoutFormProps) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label>Name</Label>
+          <RequiredLabel>Name</RequiredLabel>
           <Input
             name="customerName"
             defaultValue={defaultValues.customerName}
@@ -61,7 +62,7 @@ export function CheckoutForm({ defaultValues }: CheckoutFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>Email</Label>
+          <RequiredLabel>Email</RequiredLabel>
           <Input
             name="customerEmail"
             type="email"
@@ -71,7 +72,7 @@ export function CheckoutForm({ defaultValues }: CheckoutFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>Phone</Label>
+          <RequiredLabel>Phone</RequiredLabel>
           <Input
             name="customerPhone"
             defaultValue={defaultValues.customerPhone || ""}
@@ -80,7 +81,7 @@ export function CheckoutForm({ defaultValues }: CheckoutFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>City</Label>
+          <RequiredLabel>City</RequiredLabel>
           <Input
             name="shippingCity"
             defaultValue={defaultValues.shippingCity || ""}
@@ -89,7 +90,7 @@ export function CheckoutForm({ defaultValues }: CheckoutFormProps) {
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label>Address</Label>
+          <RequiredLabel>Address</RequiredLabel>
           <Input
             name="shippingAddress"
             defaultValue={defaultValues.shippingAddress || ""}

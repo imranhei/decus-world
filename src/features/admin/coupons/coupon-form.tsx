@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RequiredLabel } from "@/components/shared/required-label";
 
 type CouponFormProps = {
   coupon?: Coupon;
@@ -60,7 +61,7 @@ export function CouponForm({ coupon }: CouponFormProps) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label>Coupon Code</Label>
+          <RequiredLabel>Coupon Code</RequiredLabel>
           <Input
             name="code"
             defaultValue={coupon?.code || ""}
@@ -82,7 +83,7 @@ export function CouponForm({ coupon }: CouponFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>Discount Value</Label>
+          <RequiredLabel>Discount Value</RequiredLabel>
           <Input
             name="discountValue"
             type="number"

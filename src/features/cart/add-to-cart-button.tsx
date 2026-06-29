@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { ShoppingBag } from "lucide-react";
+import { useState, useTransition } from "react";
 
-import { addToCartAction } from "@/server/actions/cart-actions";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/features/cart/cart-store";
+import { addToCartAction } from "@/server/actions/cart-actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type Variant = {
   id: string;
@@ -30,8 +32,9 @@ type AddToCartButtonProps = {
 };
 
 export function AddToCartButton({ isLoggedIn, product }: AddToCartButtonProps) {
+  const router = useRouter();
   const [selectedVariantId, setSelectedVariantId] = useState(
-    product.variants[0]?.id || null
+    product.variants[0]?.id || null,
   );
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -39,7 +42,7 @@ export function AddToCartButton({ isLoggedIn, product }: AddToCartButtonProps) {
   const addItem = useCartStore((state) => state.addItem);
 
   const selectedVariant = product.variants.find(
-    (variant) => variant.id === selectedVariantId
+    (variant) => variant.id === selectedVariantId,
   );
 
   function handleAddToCart() {
@@ -72,6 +75,8 @@ export function AddToCartButton({ isLoggedIn, product }: AddToCartButtonProps) {
         quantity: 1,
       });
 
+      toast.success("Added to cart");
+      router.refresh();
       return;
     }
 
@@ -83,8 +88,13 @@ export function AddToCartButton({ isLoggedIn, product }: AddToCartButtonProps) {
       });
 
       if (!result.success) {
+        toast.error(result.message);
         setError(result.message);
+        return;
       }
+
+      toast.success("Added to cart");
+      router.refresh();
     });
   }
 
@@ -103,7 +113,9 @@ export function AddToCartButton({ isLoggedIn, product }: AddToCartButtonProps) {
               <Button
                 key={variant.id}
                 type="button"
-                variant={selectedVariantId === variant.id ? "default" : "outline"}
+                variant={
+                  selectedVariantId === variant.id ? "default" : "outline"
+                }
                 disabled={availableStock <= 0}
                 onClick={() => setSelectedVariantId(variant.id)}
               >

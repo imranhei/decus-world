@@ -24,6 +24,34 @@ export default async function EditProductPage({ params }: PageProps) {
     notFound();
   }
 
+  const safeProduct = {
+    ...product,
+    price: Number(product.price),
+    compareAtPrice: product.compareAtPrice
+      ? Number(product.compareAtPrice)
+      : null,
+    costPrice: product.costPrice ? Number(product.costPrice) : null,
+    createdAt: product.createdAt.toISOString(),
+    updatedAt: product.updatedAt.toISOString(),
+    images: product.images.map((image) => ({
+      ...image,
+      createdAt: image.createdAt.toISOString(),
+    })),
+    variants: product.variants.map((variant) => ({
+      ...variant,
+      price: variant.price ? Number(variant.price) : null,
+      createdAt: variant.createdAt.toISOString(),
+      updatedAt: variant.updatedAt.toISOString(),
+      inventory: variant.inventory
+        ? {
+            ...variant.inventory,
+            createdAt: variant.inventory.createdAt.toISOString(),
+            updatedAt: variant.inventory.updatedAt.toISOString(),
+          }
+        : null,
+    })),
+  };
+
   return (
     <div>
       <div className="mb-6">
@@ -33,7 +61,7 @@ export default async function EditProductPage({ params }: PageProps) {
         </p>
       </div>
 
-      <ProductForm product={product} categories={categories} />
+      <ProductForm product={safeProduct as any} categories={categories} />
     </div>
   );
 }

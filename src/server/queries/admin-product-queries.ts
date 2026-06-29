@@ -23,7 +23,6 @@ export async function getAdminProducts({
 
     prisma.product.count(),
   ]);
-  console.log(products);
 
   return {
     products,

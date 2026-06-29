@@ -1,5 +1,5 @@
-import { auth } from "../../../auth";
 import { prisma } from "@/lib/prisma";
+import { auth } from "../../../auth";
 
 export async function getCurrentUserCart() {
   const session = await auth();
@@ -29,4 +29,21 @@ export async function getCurrentUserCart() {
       createdAt: "desc",
     },
   });
+}
+
+export async function getCurrentUserCartCount() {
+  const session = await auth();
+
+  if (!session?.user) return 0;
+
+  const items = await prisma.cartItem.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    select: {
+      quantity: true,
+    },
+  });
+
+  return items.reduce((total, item) => total + item.quantity, 0);
 }

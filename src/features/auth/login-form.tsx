@@ -9,8 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { RequiredLabel } from "@/components/shared/required-label";
 
-export function LoginForm() {
+type LoginFormProps = {
+  callbackUrl?: string;
+};
+
+export function LoginForm({ callbackUrl }: LoginFormProps) {
   const [isPending, startTransition] = useTransition();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +24,7 @@ export function LoginForm() {
     event.preventDefault();
 
     startTransition(async () => {
-      const result = await loginAction({ email, password });
+      const result = await loginAction({ email, password, callbackUrl });
 
       if (!result?.success) {
         toast.error(result?.message || "Invalid email or password");
@@ -36,7 +41,7 @@ export function LoginForm() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label>Email</Label>
+            <RequiredLabel>Email</RequiredLabel>
             <Input
               type="email"
               placeholder="admin@example.com"
@@ -47,7 +52,7 @@ export function LoginForm() {
           </div>
 
           <div className="space-y-2">
-            <Label>Password</Label>
+            <RequiredLabel>Password</RequiredLabel>
             <Input
               type="password"
               placeholder="********"

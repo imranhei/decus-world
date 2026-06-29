@@ -5,11 +5,19 @@ import {
   type SingleImageValue,
 } from "@/components/shared/single-image-upload";
 import type { Category } from "@prisma/client";
+import { Info } from "lucide-react";
 import { useState, useTransition } from "react";
 
+import { RequiredLabel } from "@/components/shared/required-label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   createCategoryAction,
   updateCategoryAction,
@@ -68,13 +76,50 @@ export function CategoryForm({
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label>Name</Label>
-          <Input name="name" defaultValue={category?.name || ""} required />
+          <RequiredLabel>Name</RequiredLabel>
+          <Input
+            name="name"
+            defaultValue={category?.name || ""}
+            placeholder="Formal Shirt"
+            required
+          />
         </div>
 
         <div className="space-y-2">
-          <Label>Slug</Label>
-          <Input name="slug" defaultValue={category?.slug || ""} required />
+          <div className="flex h-3 items-center gap-2">
+            <RequiredLabel>Slug</RequiredLabel>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="inline-flex h-4 w-4 items-center justify-center text-muted-foreground">
+                    <Info className="h-3.5 w-3.5 mt-1" />
+                  </div>
+                </TooltipTrigger>
+
+                <TooltipContent className="max-w-xs flex flex-col text-left">
+                  <p>
+                    Slug is the clean URL name of the category. It helps SEO and
+                    makes category links readable.
+                  </p>
+                  <p className="mt-2">
+                    Example: <strong>/products?category=formal-shirt</strong>
+                  </p>
+                  <p className="mt-2">
+                    Use lowercase letters, numbers, and hyphens only. Example:
+                    <strong> formal-shirt</strong>
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
+          <Input
+            name="slug"
+            defaultValue={category?.slug || ""}
+            placeholder="formal-shirt"
+            required
+          />
         </div>
 
         <div className="space-y-2">
@@ -84,7 +129,7 @@ export function CategoryForm({
             defaultValue={category?.parentId || ""}
             className="h-10 w-full rounded-md border bg-background px-3 text-sm"
           >
-            <option value="">No parent category</option>
+            <option value="">No parent category (Main Category)</option>
 
             {parentCategories.map((parent) => (
               <option key={parent.id} value={parent.id}>
@@ -108,6 +153,7 @@ export function CategoryForm({
           <textarea
             name="description"
             defaultValue={category?.description || ""}
+            placeholder="Add a short description for this category. Example: Premium formal shirts designed for office, business meetings, and special occasions."
             className="min-h-28 w-full rounded-md border bg-background px-3 py-2 text-sm"
           />
         </div>

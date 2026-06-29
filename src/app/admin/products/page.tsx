@@ -81,7 +81,24 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
                   <td className="px-4 py-3">{product.category.name}</td>
                   <td className="px-4 py-3">৳{Number(product.price)}</td>
-                  <td className="px-4 py-3">{stock}</td>
+                  <td className="px-4 py-3">
+                    <div className="grid max-w-xs grid-cols-2 gap-1">
+                      {product.variants.map((variant) => (
+                        <span
+                          key={variant.id}
+                          className="rounded-md bg-muted px-2 py-1 text-xs font-medium"
+                        >
+                          {variant.size || "Default"}:{" "}
+                          {variant.inventory?.quantity || 0}
+                          {variant.color ? ` (${variant.color})` : ""}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="mt-2 px-2 text-xs font-semibold text-green-600">
+                      Total Stock: {stock}
+                    </div>
+                  </td>
 
                   <td className="px-4 py-3">
                     <Badge>{product.status}</Badge>

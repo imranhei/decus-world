@@ -1,11 +1,10 @@
 "use server";
 
 import bcrypt from "bcryptjs";
-import AuthError from "next-auth";
 
-import { signIn, signOut } from "../../../auth";
 import { prisma } from "@/lib/prisma";
 import { loginSchema, registerSchema } from "@/lib/validations/auth";
+import { signIn, signOut } from "../../../auth";
 
 export async function registerAction(values: unknown) {
   const validatedFields = registerSchema.safeParse(values);
@@ -59,15 +58,22 @@ export async function loginAction(values: unknown) {
 
   const { email, password } = validatedFields.data;
 
+  const callbackUrl =
+    typeof (values as { callbackUrl?: unknown }).callbackUrl === "string"
+      ? (values as { callbackUrl: string }).callbackUrl
+      : undefined;
+
   const user = await prisma.user.findUnique({
     where: { email },
     select: { role: true },
   });
 
-  const redirectTo =
+  const fallbackRedirectTo =
     user?.role === "ADMIN" || user?.role === "STAFF"
       ? "/admin/dashboard"
       : "/account/profile";
+
+  const redirectTo = callbackUrl || fallbackRedirectTo;
 
   try {
     await signIn("credentials", {

@@ -13,13 +13,21 @@ import {
   type ProductImageInput,
 } from "./product-image-manager";
 
+import { RequiredLabel } from "@/components/shared/required-label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   createProductAction,
   updateProductAction,
 } from "@/server/actions/admin-product-actions";
+import { Info, Trash } from "lucide-react";
 
 type ProductFormProps = {
   categories: Category[];
@@ -29,10 +37,35 @@ type ProductFormProps = {
   };
 };
 
+type ProductFormVariant = {
+  size: string;
+  color: string;
+  sku: string;
+  quantity: number;
+};
+
 export function ProductForm({ categories, product }: ProductFormProps) {
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
   const [isSaved, setIsSaved] = useState(false);
+
+  const [variants, setVariants] = useState<ProductFormVariant[]>(
+    product?.variants.length
+      ? product.variants.map((variant) => ({
+          size: variant.size || "",
+          color: variant.color || "",
+          sku: variant.sku || "",
+          quantity: variant.inventory?.quantity || 0,
+        }))
+      : [
+          {
+            size: "",
+            color: "",
+            sku: "",
+            quantity: 0,
+          },
+        ],
+  );
 
   const [images, setImages] = useState<ProductImageInput[]>(
     product?.images.map((image) => ({
@@ -40,6 +73,39 @@ export function ProductForm({ categories, product }: ProductFormProps) {
       publicId: image.publicId || undefined,
     })) || [],
   );
+
+  function addVariantRow() {
+    setVariants((prev) => [
+      ...prev,
+      {
+        size: "",
+        color: "",
+        sku: "",
+        quantity: 0,
+      },
+    ]);
+  }
+
+  function removeVariantRow(index: number) {
+    setVariants((prev) => prev.filter((_, itemIndex) => itemIndex !== index));
+  }
+
+  function updateVariantRow(
+    index: number,
+    field: keyof ProductFormVariant,
+    value: string | number,
+  ) {
+    setVariants((prev) =>
+      prev.map((variant, itemIndex) =>
+        itemIndex === index
+          ? {
+              ...variant,
+              [field]: value,
+            }
+          : variant,
+      ),
+    );
+  }
 
   function handleSubmit(formData: FormData) {
     setError("");
@@ -55,9 +121,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
       sku: formData.get("sku"),
       status: formData.get("status"),
       images,
-      sizes: formData.get("sizes"),
-      colors: formData.get("colors"),
-      inventoryQuantity: formData.get("inventoryQuantity"),
+      variants,
       isFeatured: formData.get("isFeatured") === "on",
       isNewArrival: formData.get("isNewArrival") === "on",
       isBestSeller: formData.get("isBestSeller") === "on",
@@ -79,21 +143,6 @@ export function ProductForm({ categories, product }: ProductFormProps) {
     });
   }
 
-  const defaultImageUrls =
-    product?.images.map((image) => image.url).join(", ") || "";
-  const defaultSizes = [
-    ...new Set(
-      product?.variants.map((variant) => variant.size).filter(Boolean),
-    ),
-  ].join(", ");
-  const defaultColors = [
-    ...new Set(
-      product?.variants.map((variant) => variant.color).filter(Boolean),
-    ),
-  ].join(", ");
-
-  const defaultInventory = product?.variants[0]?.inventory?.quantity || 0;
-
   return (
     <form
       action={handleSubmit}
@@ -103,17 +152,57 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label>Name</Label>
-          <Input name="name" defaultValue={product?.name || ""} required />
+          <RequiredLabel>Name</RequiredLabel>
+          <Input
+            name="name"
+            defaultValue={product?.name || ""}
+            placeholder="Formal Black Shirt"
+            required
+          />
         </div>
 
         <div className="space-y-2">
-          <Label>Slug</Label>
-          <Input name="slug" defaultValue={product?.slug || ""} required />
+          <div className="flex items-center gap-2 h-3">
+            <RequiredLabel>Slug</RequiredLabel>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="text-muted-foreground">
+                    <Info className="h-4 w-4" />
+                  </div>
+                </TooltipTrigger>
+
+                <TooltipContent className="max-w-xs flex flex-col">
+                  <p>
+                    Slug is the clean URL name of the product. It helps SEO and
+                    makes product links readable.
+                  </p>
+                  <p className="mt-2">
+                    Example web address:{" "}
+                    <strong>
+                      (BaseURL)/products/mens-blue-cotton-formal-shirt
+                    </strong>
+                  </p>
+                  <p className="mt-2">
+                    Use lowercase letters, numbers, and hyphens only. Example:
+                    <strong> mens-blue-cotton-formal-shirt</strong>
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
+          <Input
+            name="slug"
+            defaultValue={product?.slug || ""}
+            placeholder="mens-blue-cotton-formal-shirt"
+            required
+          />
         </div>
 
         <div className="space-y-2">
-          <Label>Category</Label>
+          <RequiredLabel>Category</RequiredLabel>
           <select
             name="categoryId"
             defaultValue={product?.categoryId || ""}
@@ -143,7 +232,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>Price</Label>
+          <RequiredLabel>Price</RequiredLabel>
           <Input
             name="price"
             type="number"
@@ -162,17 +251,131 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>Base SKU</Label>
-          <Input name="sku" defaultValue={product?.sku || ""} />
+          <div className="flex h-5 items-center gap-1.5">
+            <Label className="leading-none">Base SKU</Label>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="inline-flex h-4 w-4 items-center justify-center text-muted-foreground">
+                    <Info className="h-3.5 w-3.5" />
+                  </div>
+                </TooltipTrigger>
+
+                <TooltipContent className="max-w-xs flex flex-col">
+                  <p>
+                    Base SKU is the main product code used for inventory,
+                    tracking, and internal identification.
+                  </p>
+                  <p className="mt-2">
+                    Variant SKUs can be generated from this base code with
+                    size/color.
+                  </p>
+                  <p className="mt-2">
+                    Example: <strong>FSHIRT-BLACK</strong> →{" "}
+                    <strong>FSHIRT-BLACK-M</strong>,{" "}
+                    <strong>FSHIRT-BLACK-L</strong>
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
+          <Input
+            name="sku"
+            defaultValue={product?.sku || ""}
+            placeholder="FSHIRT-BLACK"
+          />
         </div>
 
-        <div className="space-y-2">
-          <Label>Inventory Quantity</Label>
-          <Input
-            name="inventoryQuantity"
-            type="number"
-            defaultValue={defaultInventory}
-          />
+        <div className="space-y-4 md:col-span-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Variants & Inventory</Label>
+              <p className="text-xs text-muted-foreground">
+                Add each size/color with its own stock quantity.
+              </p>
+            </div>
+
+            <Button type="button" variant="outline" onClick={addVariantRow}>
+              Add Variant
+            </Button>
+          </div>
+
+          <div className="space-y-3">
+            {variants.map((variant, index) => (
+              <div
+                key={index}
+                className="grid gap-3 rounded-xl border p-4 md:grid-cols-[1fr_1fr_1fr_120px_auto]"
+              >
+                <div className="space-y-2">
+                  <Label>Size</Label>
+                  <Input
+                    value={variant.size}
+                    placeholder="M"
+                    onChange={(event) =>
+                      updateVariantRow(index, "size", event.target.value)
+                    }
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Color</Label>
+                  <Input
+                    value={variant.color}
+                    placeholder="Black"
+                    onChange={(event) =>
+                      updateVariantRow(index, "color", event.target.value)
+                    }
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="flex items-center">
+                    SKU{" "}
+                    <span className="text-xs text-muted-foreground h-3">
+                      (optional)
+                    </span>
+                  </Label>
+                  <Input
+                    value={variant.sku}
+                    placeholder="FSS-1234"
+                    onChange={(event) =>
+                      updateVariantRow(index, "sku", event.target.value)
+                    }
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Quantity</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    value={variant.quantity}
+                    onChange={(event) =>
+                      updateVariantRow(
+                        index,
+                        "quantity",
+                        Number(event.target.value),
+                      )
+                    }
+                  />
+                </div>
+
+                <div className="flex items-end ">
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="destructive"
+                    disabled={variants.length === 1}
+                    onClick={() => removeVariantRow(index)}
+                  >
+                    <Trash className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="space-y-2 md:col-span-2">
@@ -180,14 +383,16 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           <Input
             name="shortDescription"
             defaultValue={product?.shortDescription || ""}
+            placeholder="Formal Black Shirt"
           />
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label>Description</Label>
+          <RequiredLabel>Description</RequiredLabel>
           <textarea
             name="description"
             defaultValue={product?.description || ""}
+            placeholder="Classic and comfortable men's formal shirt made with premium cotton fabric. Designed for office, business meetings, and formal occasions. Soft feel, breathable fabric, and modern fit for everyday confidence."
             className="min-h-32 w-full rounded-md border bg-background px-3 py-2 text-sm"
             required
           />
@@ -203,26 +408,12 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label>Sizes</Label>
-          <Input
-            name="sizes"
-            defaultValue={defaultSizes}
-            placeholder="S, M, L, XL"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Colors</Label>
-          <Input
-            name="colors"
-            defaultValue={defaultColors}
-            placeholder="Black, White, Blue"
-          />
-        </div>
-
-        <div className="space-y-2">
           <Label>Meta Title</Label>
-          <Input name="metaTitle" defaultValue={product?.metaTitle || ""} />
+          <Input
+            name="metaTitle"
+            defaultValue={product?.metaTitle || ""}
+            placeholder="Men's Blue Cotton Formal Shirt | Decus World"
+          />
         </div>
 
         <div className="space-y-2">
@@ -230,6 +421,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           <Input
             name="metaDescription"
             defaultValue={product?.metaDescription || ""}
+            placeholder="Shop men's blue cotton formal shirt from Decus World. Premium fabric, modern fit, and comfortable style for office and formal wear."
           />
         </div>
       </div>
