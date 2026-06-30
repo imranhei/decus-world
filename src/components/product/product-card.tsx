@@ -1,21 +1,15 @@
-import type {
-  Category,
-  Inventory,
-  Product,
-  ProductImage,
-  ProductVariant,
-} from "@prisma/client";
+import type { Category, Product, ProductImage } from "@prisma/client";
+import { Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { ProductCardAddButton } from "@/components/product/product-card-add-button";
+import { Button } from "@/components/ui/button";
 import { WishlistButton } from "@/features/wishlist/wishlist-button";
 
 type ProductCardProps = {
   product: Product & {
     images: ProductImage[];
     category: Category;
-    variants?: Array<ProductVariant & { inventory: Inventory | null }>;
   };
   isLoggedIn?: boolean;
   isWishlisted?: boolean;
@@ -27,30 +21,24 @@ export function ProductCard({
   isWishlisted = false,
 }: ProductCardProps) {
   const image = product.images[0];
-  const firstVariant = product.variants?.[0];
 
   return (
-    <article className="group relative overflow-hidden rounded-3xl border bg-background shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+    <article className="group overflow-hidden rounded-3xl border bg-background shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
       <div className="relative aspect-square overflow-hidden bg-muted">
-        <Link
-          href={`/products/${product.slug}`}
-          className="block h-full w-full"
-        >
-          {image ? (
-            <Image
-              src={image.url}
-              alt={image.altText || product.name}
-              fill
-              className="object-cover transition duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-              No image
-            </div>
-          )}
-        </Link>
+        {image ? (
+          <Image
+            src={image.url}
+            alt={image.altText || product.name}
+            fill
+            className="object-cover transition duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+            No image
+          </div>
+        )}
 
-        <div className="absolute right-4 top-4 z-20">
+        <div className="absolute right-4 top-4 z-10">
           <WishlistButton
             productId={product.id}
             isLoggedIn={isLoggedIn}
@@ -60,11 +48,7 @@ export function ProductCard({
       </div>
 
       <div className="p-5">
-        <Link href={`/products/${product.slug}`}>
-          <h3 className="line-clamp-1 text-base font-semibold hover:underline">
-            {product.name}
-          </h3>
-        </Link>
+        <h3 className="line-clamp-1 text-base font-semibold">{product.name}</h3>
 
         <div className="mt-2 flex flex-wrap gap-1">
           <span className="rounded border px-2 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
@@ -95,19 +79,12 @@ export function ProductCard({
             </p>
           </div>
 
-          <ProductCardAddButton
-            isLoggedIn={isLoggedIn}
-            product={{
-              id: product.id,
-              name: product.name,
-              slug: product.slug,
-              price: Number(product.price),
-              imageUrl: image?.url,
-              variantId: firstVariant?.id,
-              size: firstVariant?.size,
-              color: firstVariant?.color,
-            }}
-          />
+          <Button size="sm" className="rounded-lg px-4">
+            <Link href={`/products/${product.slug}`} className="flex items-center">
+              <Eye className="mr-2 h-4 w-4" />
+              View
+            </Link>
+          </Button>
         </div>
       </div>
     </article>

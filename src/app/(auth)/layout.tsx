@@ -28,7 +28,7 @@ export default function AuthLayout({
         </p>
       </section>
 
-      <section className="relative flex flex-1 items-center justify-center bg-muted px-4 py-10">
+      <section className="relative flex flex-1 items-center justify-center bg-muted px-4">
         <Link
           href="/"
           className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm font-medium shadow-sm transition hover:bg-muted lg:hidden"

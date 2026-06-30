@@ -50,7 +50,7 @@ export default function ShopFooter() {
           </div>
 
           {/* Quick Links - Spans 2 columns */}
-          <div className="lg:col-span-2">
+          {/* <div className="lg:col-span-2">
             <h4 className="mb-6 text-xs font-semibold uppercase tracking-widest text-gray-300">
               Explore
             </h4>
@@ -75,7 +75,7 @@ export default function ShopFooter() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Customer Service - Spans 2 columns */}
           <div className="lg:col-span-2">
@@ -84,11 +84,11 @@ export default function ShopFooter() {
             </h4>
             <ul className="space-y-4 text-sm">
               {[
-                { name: "Shipping Policy", path: "/shipping" },
-                { name: "Returns & Refund", path: "/returns" },
-                { name: "Privacy Policy", path: "/privacy" },
-                { name: "Terms & Conditions", path: "/terms" },
-                { name: "FAQ", path: "/faq" },
+                { name: "Shipping Policy", path: "#" },
+                { name: "Returns & Refund", path: "#" },
+                { name: "Privacy Policy", path: "#" },
+                { name: "Terms & Conditions", path: "#" },
+                { name: "FAQ", path: "#" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
@@ -157,7 +157,7 @@ export default function ShopFooter() {
                   <FaInstagram size={14} />
                 </Link>
                 <Link
-                  href="https://www.facebook.com/messages/t/61586243758034/"
+                  href="https://www.facebook.com/messages/t/decusworld/"
                   aria-label="Messenger"
                   target="_blank"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-300 hover:border-transparent hover:bg-[#C8A46A] hover:text-black"

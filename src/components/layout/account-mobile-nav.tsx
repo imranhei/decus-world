@@ -1,8 +1,8 @@
 "use client";
 
-import { Heart, Package, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Heart, Package, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const accountLinks = [
@@ -11,19 +11,19 @@ const accountLinks = [
   { title: "Wishlist", href: "/account/wishlist", icon: Heart },
 ];
 
-export function AccountSidebar() {
+export function AccountMobileNav() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden h-fit rounded-2xl border bg-background p-4 md:block">
-      <div className="mb-4 border-b pb-4">
+    <div className="mb-6 rounded-2xl border bg-background p-3 md:hidden">
+      <div className="mb-3 px-1">
         <h2 className="font-semibold">My Account</h2>
-        <p className="mt-1 text-xs text-muted-foreground">
-          Manage your profile and orders.
+        <p className="text-xs text-muted-foreground">
+          Profile, orders and wishlist
         </p>
       </div>
 
-      <nav className="space-y-1">
+      <div className="grid grid-cols-3 gap-2">
         {accountLinks.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href;
@@ -33,18 +33,18 @@ export function AccountSidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition",
+                "flex flex-col items-center justify-center rounded-xl px-2 py-3 text-xs font-medium transition",
                 active
                   ? "bg-zinc-950 text-white"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  : "bg-muted text-muted-foreground"
               )}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="mb-1 h-4 w-4" />
               {item.title}
             </Link>
           );
         })}
-      </nav>
-    </aside>
+      </div>
+    </div>
   );
 }

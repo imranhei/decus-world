@@ -9,6 +9,7 @@ import {
 import { JsonLd } from "@/components/seo/json-ld";
 import { siteConfig } from "@/config/site";
 import { createCollectionJsonLd } from "@/lib/seo";
+import { BackButton } from "@/components/shared/back-button";
 
 export const metadata = {
   title: "Products",
@@ -47,11 +48,15 @@ export default async function ProductsPage({
     <>
       <JsonLd data={collectionJsonLd} />
       <main className="mx-auto max-w-7xl px-4 py-10">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Products</h1>
-          <p className="mt-2 text-muted-foreground">
-            Showing {productResult.totalProducts} products.
-          </p>
+        <div className="mb-8 flex justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Products</h1>
+            <p className="mt-2 text-muted-foreground">
+              Showing {productResult.totalProducts} products.
+            </p>
+          </div>
+
+          <BackButton />
         </div>
 
         <ProductFilters categories={categories} />

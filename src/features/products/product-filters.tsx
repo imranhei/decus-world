@@ -1,10 +1,20 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import type { Category } from "@prisma/client";
+import {
+  ArrowDownUp,
+  ArrowLeft,
+  Grid2X2,
+  RotateCcw,
+  Search,
+  Sparkles,
+  Trophy,
+  X,
+} from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 type ProductFiltersProps = {
   categories: Category[];
@@ -32,7 +42,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     const params = new URLSearchParams(searchParams.toString());
 
     params.delete("page");
-    
+
     if (params.get(key) === "true") {
       params.delete(key);
     } else {
@@ -46,69 +56,110 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     router.push("/products");
   }
 
+  const isFeatured = searchParams.get("featured") === "true";
+  const isNewArrival = searchParams.get("newArrival") === "true";
+  const isBestSeller = searchParams.get("bestSeller") === "true";
+
   return (
-    <div className="mb-8 rounded-xl border bg-background p-4">
-      <div className="grid gap-4 md:grid-cols-[1fr_220px_220px]">
-        <Input
-          placeholder="Search products..."
-          defaultValue={searchParams.get("search") || ""}
-          onChange={(event) => updateParam("search", event.target.value)}
-        />
+    <div className="mb-10">
+      <div className="rounded-3xl border bg-background p-5 shadow-sm md:p-6">
+        <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr_0.65fr]">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              placeholder="Search products..."
+              defaultValue={searchParams.get("search") || ""}
+              onChange={(event) => updateParam("search", event.target.value)}
+              className="h-12 w-full rounded-xl border bg-background pl-11 pr-4 text-sm outline-none transition focus:border-black"
+            />
+          </div>
 
-        <select
-          value={searchParams.get("category") || ""}
-          onChange={(event) => updateParam("category", event.target.value)}
-          className="h-10 rounded-md border bg-background px-3 text-sm"
-        >
-          <option value="">All Categories</option>
+          <div className="relative">
+            <Grid2X2 className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <select
+              value={searchParams.get("category") || ""}
+              onChange={(event) => updateParam("category", event.target.value)}
+              className="h-12 w-full appearance-none rounded-xl border bg-background pl-11 pr-4 text-sm outline-none transition focus:border-black"
+            >
+              <option value="">All Categories</option>
 
-          {categories.map((category) => (
-            <option key={category.id} value={category.slug}>
-              {category.name}
-            </option>
-          ))}
-        </select>
+              {categories.map((category) => (
+                <option key={category.id} value={category.slug}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <select
-          value={searchParams.get("sort") || ""}
-          onChange={(event) => updateParam("sort", event.target.value)}
-          className="h-10 rounded-md border bg-background px-3 text-sm"
-        >
-          <option value="">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-        </select>
-      </div>
+          <div className="relative">
+            <ArrowDownUp className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <select
+              value={searchParams.get("sort") || ""}
+              onChange={(event) => updateParam("sort", event.target.value)}
+              className="h-12 w-full appearance-none rounded-xl border bg-background pl-11 pr-4 text-sm outline-none transition focus:border-black"
+            >
+              <option value="">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <Button
-          type="button"
-          variant={searchParams.get("featured") === "true" ? "default" : "outline"}
-          onClick={() => toggleParam("featured")}
-        >
-          Featured
-        </Button>
+        <div className="my-5 h-px bg-border" />
 
-        <Button
-          type="button"
-          variant={searchParams.get("newArrival") === "true" ? "default" : "outline"}
-          onClick={() => toggleParam("newArrival")}
-        >
-          New Arrival
-        </Button>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <p className="text-sm font-semibold">Filters</p>
 
-        <Button
-          type="button"
-          variant={searchParams.get("bestSeller") === "true" ? "default" : "outline"}
-          onClick={() => toggleParam("bestSeller")}
-        >
-          Best Seller
-        </Button>
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Clear all
+          </button>
+        </div>
 
-        <Button type="button" variant="ghost" onClick={clearFilters}>
-          Clear
-        </Button>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => toggleParam("featured")}
+            className={cn(
+              "h-11 rounded-xl",
+              isFeatured && "border-amber-500 bg-amber-50 text-amber-700",
+            )}
+          >
+            <Sparkles className="mr-2 h-4 w-4" />
+            Featured
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => toggleParam("newArrival")}
+            className={cn(
+              "h-11 rounded-xl",
+              isNewArrival && "border-black bg-black text-white",
+            )}
+          >
+            New Arrival
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => toggleParam("bestSeller")}
+            className={cn(
+              "h-11 rounded-xl",
+              isBestSeller && "border-black bg-black text-white",
+            )}
+          >
+            <Trophy className="mr-2 h-4 w-4" />
+            Best Seller
+          </Button>
+        </div>
       </div>
     </div>
   );

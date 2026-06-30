@@ -68,7 +68,7 @@ export default function RootLayout({
         className={`${inter.variable} ${cormorant.variable} font-sans antialiased`}
       >
         <AppProvider>{children}</AppProvider>
-        <Toaster richColors position="top-right" />
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

@@ -20,7 +20,7 @@ type CartStore = {
   updateQuantity: (
     productId: string,
     variantId: string | null | undefined,
-    quantity: number
+    quantity: number,
   ) => void;
   clearCart: () => void;
 };
@@ -35,7 +35,7 @@ export const useCartStore = create<CartStore>()(
           const existingItem = state.items.find(
             (cartItem) =>
               cartItem.productId === item.productId &&
-              cartItem.variantId === item.variantId
+              cartItem.variantId === item.variantId,
           );
 
           if (existingItem) {
@@ -47,7 +47,7 @@ export const useCartStore = create<CartStore>()(
                       ...cartItem,
                       quantity: cartItem.quantity + item.quantity,
                     }
-                  : cartItem
+                  : cartItem,
               ),
             };
           }
@@ -61,7 +61,7 @@ export const useCartStore = create<CartStore>()(
         set((state) => ({
           items: state.items.filter(
             (item) =>
-              !(item.productId === productId && item.variantId === variantId)
+              !(item.productId === productId && item.variantId === variantId),
           ),
         })),
 
@@ -74,12 +74,12 @@ export const useCartStore = create<CartStore>()(
                     !(
                       item.productId === productId &&
                       item.variantId === variantId
-                    )
+                    ),
                 )
               : state.items.map((item) =>
                   item.productId === productId && item.variantId === variantId
                     ? { ...item, quantity }
-                    : item
+                    : item,
                 ),
         })),
 
@@ -87,6 +87,6 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "decus-cart",
-    }
-  )
+    },
+  ),
 );

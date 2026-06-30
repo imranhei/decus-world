@@ -72,9 +72,9 @@ export function ProductCardAddButton({
   }
 
   return (
-    <Button size="sm" className="rounded-lg px-4" onClick={handleAdd}>
+    <Button  className="rounded-lg px-4" onClick={handleAdd}>
       <ShoppingBag className="mr-2 h-4 w-4" />
-      Add
+      Add to cart
     </Button>
   );
 }

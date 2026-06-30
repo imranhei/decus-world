@@ -9,7 +9,7 @@ import { ImagePreviewDialog } from "@/components/shared/image-preview-dialog";
 import { StarRating } from "@/components/shared/star-rating";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
-import { AddToCartButton } from "@/features/cart/add-to-cart-button";
+import { ProductPurchasePanel } from "@/features/products/product-purchase-panel";
 import { ReviewForm } from "@/features/reviews/review-form";
 import { WishlistButton } from "@/features/wishlist/wishlist-button";
 import { createBreadcrumbJsonLd, createProductJsonLd } from "@/lib/seo";
@@ -212,48 +212,6 @@ export default async function ProductDetailsPage({
               </span>
             </div>
 
-            {sizes.length ? (
-              <div className="mt-6">
-                <p className="mb-2 text-sm font-semibold">Size</p>
-                <div className="flex flex-wrap gap-2">
-                  {sizes.map((size, index) => (
-                    <button
-                      key={size}
-                      type="button"
-                      className={`min-w-11 rounded border px-4 py-2 text-sm transition ${
-                        index === 0
-                          ? "border-black bg-black text-white"
-                          : "border-border hover:border-black"
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-
-            {colors.length ? (
-              <div className="mt-5">
-                <p className="mb-2 text-sm font-semibold">Color</p>
-                <div className="flex flex-wrap gap-2">
-                  {colors.map((color, index) => (
-                    <button
-                      key={color}
-                      type="button"
-                      className={`rounded border px-4 py-2 text-xs font-bold uppercase transition ${
-                        index === 0
-                          ? "border-black bg-black text-white"
-                          : "border-border hover:border-black"
-                      }`}
-                    >
-                      {color}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-
             <ImagePreviewDialog
               image={SizeChart}
               title="Size Chart"
@@ -263,33 +221,7 @@ export default async function ProductDetailsPage({
               buttonClassName="mt-6 h-12 w-48 rounded-none border-black"
             />
 
-            <div className="mt-5">
-              <p className="mb-2 text-sm text-muted-foreground">Quantity</p>
-
-              <div className="flex h-12 w-36 items-center border">
-                <button
-                  type="button"
-                  className="flex h-full flex-1 items-center justify-center text-lg"
-                >
-                  -
-                </button>
-
-                <span className="flex h-full flex-1 items-center justify-center">
-                  1
-                </span>
-
-                <button
-                  type="button"
-                  className="flex h-full flex-1 items-center justify-center text-lg"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-6 flex items-center gap-2">
-              <Heart className="h-5 w-5" />
-
+            <div className="mt-6">
               <WishlistButton
                 productId={product.id}
                 isLoggedIn={Boolean(session?.user)}
@@ -298,28 +230,27 @@ export default async function ProductDetailsPage({
               />
             </div>
 
-            <div className="mt-8 space-y-3">
-              <AddToCartButton
-                isLoggedIn={Boolean(session?.user)}
-                product={{
-                  id: product.id,
-                  name: product.name,
-                  slug: product.slug,
-                  price: Number(product.price),
-                  imageUrl: product.images[0]?.url,
-                  variants: product.variants.map((variant) => ({
-                    id: variant.id,
-                    size: variant.size,
-                    color: variant.color,
-                    inventory: variant.inventory,
-                  })),
-                }}
-              />
-
-              <Button className="h-14 w-full rounded-none bg-black text-white hover:bg-black/90">
-                Buy it now
-              </Button>
-            </div>
+            <ProductPurchasePanel
+              isLoggedIn={Boolean(session?.user)}
+              product={{
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: Number(product.price),
+                imageUrl: product.images[0]?.url,
+                variants: product.variants.map((variant) => ({
+                  id: variant.id,
+                  size: variant.size,
+                  color: variant.color,
+                  inventory: variant.inventory
+                    ? {
+                        quantity: variant.inventory.quantity,
+                        reserved: variant.inventory.reserved,
+                      }
+                    : null,
+                })),
+              }}
+            />
 
             <div className="mt-8 space-y-5 leading-7 text-muted-foreground">
               <p>{product.description}</p>
