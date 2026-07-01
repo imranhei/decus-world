@@ -1,10 +1,10 @@
 import type { Category, Product, ProductImage } from "@prisma/client";
-import { Eye } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { WishlistButton } from "@/features/wishlist/wishlist-button";
+import { auth } from "../../../auth";
 
 type ProductCardProps = {
   product: Product & {
@@ -15,11 +15,11 @@ type ProductCardProps = {
   isWishlisted?: boolean;
 };
 
-export function ProductCard({
+export async function ProductCard({
   product,
-  isLoggedIn = false,
   isWishlisted = false,
 }: ProductCardProps) {
+  const session = await auth();
   const image = product.images[0];
 
   return (
@@ -41,7 +41,7 @@ export function ProductCard({
         <div className="absolute right-4 top-4 z-10">
           <WishlistButton
             productId={product.id}
-            isLoggedIn={isLoggedIn}
+            isLoggedIn={Boolean(session?.user)}
             initialWishlisted={isWishlisted}
           />
         </div>
@@ -79,12 +79,13 @@ export function ProductCard({
             </p>
           </div>
 
-          <Button size="sm" className="rounded-lg px-4">
-            <Link href={`/products/${product.slug}`} className="flex items-center">
-              <Eye className="mr-2 h-4 w-4" />
-              View
-            </Link>
-          </Button>
+          <Link
+            href={`/products/${product.slug}`}
+            className="flex items-center gap-2 text-sm font-medium text-teal-500 transition-all group-hover:gap-3"
+          >
+            View Details
+            <ChevronRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </article>

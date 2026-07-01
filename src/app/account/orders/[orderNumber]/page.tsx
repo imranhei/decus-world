@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 
-import { getCurrentUserOrderByNumber } from "@/server/queries/order-queries";
 import { Badge } from "@/components/ui/badge";
+import { getCurrentUserOrderByNumber } from "@/server/queries/order-queries";
+import Link from "next/link";
 
 type PageProps = {
   params: Promise<{
@@ -22,7 +23,11 @@ export default async function AccountOrderDetailsPage({ params }: PageProps) {
       <div className="rounded-xl border bg-background p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold">Order {order.orderNumber}</h1>
+            <p
+              className="text-2xl font-bold"
+            >
+              Order {order.orderNumber}
+            </p>
             <p className="mt-1 text-sm text-muted-foreground">
               Placed on {new Date(order.createdAt).toLocaleDateString()}
             </p>
@@ -42,7 +47,12 @@ export default async function AccountOrderDetailsPage({ params }: PageProps) {
               className="flex justify-between gap-4 border-b pb-4 last:border-0 last:pb-0"
             >
               <div>
-                <p className="font-medium">{item.productName}</p>
+                <Link
+                  href={`/products/${item.product.slug}`}
+                  className="font-medium text-teal-500 hover:underline"
+                >
+                  {item.productName}
+                </Link>
                 <p className="text-sm text-muted-foreground">
                   {item.size} / {item.color} · Qty {item.quantity}
                 </p>

@@ -2,6 +2,7 @@
 
 import type { User } from "@prisma/client";
 import { MapPin, Phone, Save, UserRound } from "lucide-react";
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -143,7 +144,14 @@ export function ProfileForm({ user }: ProfileFormProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-end border-t bg-muted/30 px-6 py-5">
+      <div className="flex items-center justify-between border-t bg-muted/30 px-6 py-5">
+        <Button
+          variant="link"
+          size="sm"
+          className="text-sm text-muted-foreground hover:text-foreground"
+        >
+          <Link href="/reset-password">Reset Password</Link>
+        </Button>
         <Button
           disabled={isPending}
           type="submit"

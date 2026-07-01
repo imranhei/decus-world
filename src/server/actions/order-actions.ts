@@ -11,7 +11,7 @@ import { auth } from "../../../auth";
 
 import {
   sendAdminNewOrderEmail,
-  sendOrderConfirmationEmail,
+  // sendOrderConfirmationEmail,
 } from "@/server/services/email-service";
 
 function generateOrderNumber() {
@@ -182,7 +182,7 @@ export async function placeCashOnDeliveryOrderAction(values: unknown) {
   };
 
   await Promise.allSettled([
-    sendOrderConfirmationEmail(emailPayload),
+    // sendOrderConfirmationEmail(emailPayload),
     sendAdminNewOrderEmail(emailPayload),
   ]);
 

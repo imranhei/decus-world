@@ -91,7 +91,8 @@ export function CheckoutForm({ defaultValues }: CheckoutFormProps) {
 
         <div className="space-y-2 md:col-span-2">
           <RequiredLabel>Address</RequiredLabel>
-          <Input
+          <textarea
+            className="min-h-24 w-full rounded-xl border bg-background px-3 py-2 outline-none transition focus:border-zinc-950"
             name="shippingAddress"
             defaultValue={defaultValues.shippingAddress || ""}
             required

@@ -12,16 +12,16 @@ import {
 type AdminNewOrderEmailProps = {
   orderNumber: string;
   customerName: string;
-  customerPhone: string;
   customerEmail: string;
+  customerPhone: string;
   total: number;
 };
 
 export function AdminNewOrderEmail({
   orderNumber,
   customerName,
-  customerPhone,
   customerEmail,
+  customerPhone,
   total,
 }: AdminNewOrderEmailProps) {
   return (
@@ -31,7 +31,7 @@ export function AdminNewOrderEmail({
 
       <Body style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f6f6f6" }}>
         <Container style={{ backgroundColor: "#ffffff", padding: "32px", borderRadius: "12px" }}>
-          <Heading>New Order Received</Heading>
+          <Heading>New Order Placed</Heading>
 
           <Text>
             <strong>Order Number:</strong> {orderNumber}
@@ -44,11 +44,11 @@ export function AdminNewOrderEmail({
           </Text>
 
           <Text>
-            <strong>Phone:</strong> {customerPhone}
+            <strong>Email:</strong> {customerEmail}
           </Text>
 
           <Text>
-            <strong>Email:</strong> {customerEmail}
+            <strong>Phone:</strong> {customerPhone}
           </Text>
 
           <Text>

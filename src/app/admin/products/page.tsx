@@ -39,12 +39,12 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         <table className="w-full text-sm">
           <thead className="border-b bg-muted">
             <tr>
-              <th className="px-4 py-3 text-left">Product</th>
-              <th className="px-4 py-3 text-left">Category</th>
-              <th className="px-4 py-3 text-left">Price</th>
-              <th className="px-4 py-3 text-left">Stock</th>
-              <th className="px-4 py-3 text-left">Status</th>
-              <th className="px-4 py-3 text-right">Action</th>
+              <th className="px-2 py-2 text-left">Product</th>
+              <th className="px-2 py-2 text-left">Category</th>
+              <th className="px-2 py-2 text-left">Price</th>
+              <th className="px-2 py-2 text-left">Stock</th>
+              <th className="px-2 py-2 text-left">Status</th>
+              <th className="px-2 py-2 text-right">Action</th>
             </tr>
           </thead>
 
@@ -57,7 +57,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
               return (
                 <tr key={product.id} className="border-b last:border-0">
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2">
                     <div className="flex items-center gap-3">
                       <div className="relative h-14 w-12 overflow-hidden rounded bg-muted">
                         {product.images[0] ? (
@@ -79,9 +79,9 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                     </div>
                   </td>
 
-                  <td className="px-4 py-3">{product.category.name}</td>
-                  <td className="px-4 py-3">৳{Number(product.price)}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2">{product.category.name}</td>
+                  <td className="px-2 py-2">৳{Number(product.price)}</td>
+                  <td className="px-2 py-2">
                     <div className="grid max-w-xs grid-cols-2 gap-1">
                       {product.variants.map((variant) => (
                         <span
@@ -100,12 +100,12 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                     </div>
                   </td>
 
-                  <td className="px-4 py-3">
+                  <td className="px-2 py-2">
                     <Badge>{product.status}</Badge>
                   </td>
 
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-2">
+                  <td className="px-2 py-2 text-right">
+                    <div className="flex justify-end gap-2 flex-wrap">
                       <Button size="sm" variant="outline">
                         <Link href={`/admin/products/${product.id}/edit`}>
                           Edit
@@ -132,7 +132,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
               <tr>
                 <td
                   colSpan={6}
-                  className="px-4 py-10 text-center text-muted-foreground"
+                  className="px-2 py-10 text-center text-muted-foreground"
                 >
                   No products found.
                 </td>

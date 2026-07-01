@@ -1,13 +1,17 @@
 import Link from "next/link";
 
-import { getAdminCustomers } from "@/server/queries/admin-customer-queries";
 import { Pagination } from "@/components/shared/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { AdminCustomerFilters } from "@/features/admin/customers/admin-customer-filters";
+import { getAdminCustomers } from "@/server/queries/admin-customer-queries";
 
 type PageProps = {
   searchParams: Promise<{
     page?: string;
+    search?: string;
+    role?: string;
+    sort?: string;
   }>;
 };
 
@@ -18,6 +22,9 @@ export default async function AdminCustomersPage({ searchParams }: PageProps) {
   const customerResult = await getAdminCustomers({
     page,
     limit: 10,
+    search: params.search,
+    role: params.role,
+    sort: params.sort,
   });
 
   const customers = customerResult.customers;
@@ -30,6 +37,8 @@ export default async function AdminCustomersPage({ searchParams }: PageProps) {
           Manage customers, staff, admins, and customer order history.
         </p>
       </div>
+
+      <AdminCustomerFilters />
 
       <div className="overflow-hidden rounded-xl border bg-background">
         <table className="w-full text-sm">
@@ -57,7 +66,11 @@ export default async function AdminCustomersPage({ searchParams }: PageProps) {
                 <td className="px-4 py-3">{customer.phone || "N/A"}</td>
 
                 <td className="px-4 py-3">
-                  <Badge>{customer.role}</Badge>
+                  <Badge
+                    className={`${customer.role === "ADMIN" ? "bg-blue-100 text-blue-800" : customer.role === "STAFF" ? "bg-green-100 text-green-800" : "bg-teal-100 text-teal-800"}`}
+                  >
+                    {customer.role}
+                  </Badge>
                 </td>
 
                 <td className="px-4 py-3">{customer._count.orders}</td>

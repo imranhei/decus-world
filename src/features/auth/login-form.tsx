@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -49,11 +49,7 @@ export function LoginForm({ callbackUrl }: LoginFormProps) {
       </div>
 
       <div className="rounded-3xl border bg-background/95 p-6 shadow-sm md:p-8">
-        <form
-          onSubmit={handleSubmit}
-          autoComplete="off"
-          className="space-y-5"
-        >
+        <form onSubmit={handleSubmit} autoComplete="off" className="space-y-5">
           <div className="space-y-2">
             <RequiredLabel>Email address</RequiredLabel>
 
@@ -105,6 +101,15 @@ export function LoginForm({ callbackUrl }: LoginFormProps) {
                   <Eye className="h-4 w-4" />
                 )}
               </button>
+            </div>
+
+            <div className="text-right">
+              <Link
+                href="/forgot-password"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                Forgot password?
+              </Link>
             </div>
           </div>
 

@@ -2,9 +2,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
 import { AppProvider } from "@/providers/app-provider";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, Geist, Geist_Mono, Inter } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
-import { Inter, Cormorant_Garamond } from "next/font/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,6 +67,12 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className={`${inter.variable} ${cormorant.variable} font-sans antialiased`}
       >
+        <NextTopLoader
+          color="#111827"
+          height={3}
+          showSpinner={false}
+          shadow="0 0 10px #111827,0 0 5px #111827"
+        />
         <AppProvider>{children}</AppProvider>
         <Toaster position="bottom-right" />
       </body>

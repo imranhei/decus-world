@@ -13,6 +13,7 @@ import { CartIconButton } from "@/features/cart/cart-icon-button";
 import { logoutAction } from "@/server/actions/auth-actions";
 import { getCurrentUserCartCount } from "@/server/queries/cart-queries";
 import { auth } from "../../../auth";
+import { ShopNavLinks } from "./shop-nav-links";
 
 const navLinks = [
   { title: "Products", href: "/products" },
@@ -33,21 +34,13 @@ export async function ShopNavbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
-      <div className="flex h-16 items-center justify-between gap-3 px-4">
+      <div className="flex max-w-7xl h-16 mx-auto items-center justify-between gap-3 px-4">
         <Link href="/" className="text-xl font-bold">
           Decus World
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          {navLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm font-medium"
-            >
-              {item.title}
-            </Link>
-          ))}
+          <ShopNavLinks />
         </nav>
 
         <div className="flex items-center gap-2">
@@ -85,15 +78,7 @@ export async function ShopNavbar() {
               </SheetHeader>
 
               <nav className="mt-0 space-y-1 px-4">
-                {navLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="block rounded-xl px-3 py-2 text-sm font-medium hover:bg-muted"
-                  >
-                    {item.title}
-                  </Link>
-                ))}
+                <ShopNavLinks mobile />
               </nav>
 
               {session?.user ? (

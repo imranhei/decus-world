@@ -1,57 +1,55 @@
 import { emailConfig } from "@/config/email";
-import { resend } from "@/lib/resend";
-import { OrderConfirmationEmail } from "@/emails/order-confirmation-email";
 import { AdminNewOrderEmail } from "@/emails/admin-new-order-email";
+import { PasswordResetEmail } from "@/emails/password-reset-email";
+import { resend } from "@/lib/resend";
 
-type OrderEmailPayload = {
+export async function sendPasswordResetEmail({
+  email,
+  resetUrl,
+}: {
+  email: string;
+  resetUrl: string;
+}) {
+  if (!emailConfig.enabled) return;
+  if (!process.env.RESEND_API_KEY) return;
+
+  await resend.emails.send({
+    from: emailConfig.from,
+    to: email,
+    subject: "Reset your Decus World password",
+    react: PasswordResetEmail({
+      resetUrl,
+    }),
+  });
+}
+
+export async function sendAdminNewOrderEmail({
+  orderNumber,
+  customerName,
+  customerEmail,
+  customerPhone,
+  total,
+}: {
   orderNumber: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
   total: number;
-  items: {
-    name: string;
-    quantity: number;
-    total: number;
-  }[];
-};
-
-export async function sendOrderConfirmationEmail(payload: OrderEmailPayload) {
+}) {
   if (!emailConfig.enabled) return;
   if (!process.env.RESEND_API_KEY) return;
-
-  await resend.emails.send({
-    from: emailConfig.from,
-    to: payload.customerEmail,
-    subject: `Order confirmed - ${payload.orderNumber}`,
-    react: (
-      <OrderConfirmationEmail
-        customerName={payload.customerName}
-        orderNumber={payload.orderNumber}
-        total={payload.total}
-        items={payload.items}
-      />
-    ),
-  });
-}
-
-export async function sendAdminNewOrderEmail(payload: OrderEmailPayload) {
-  if (!emailConfig.enabled) return;
   if (!emailConfig.adminOrderEmail) return;
-  if (!process.env.RESEND_API_KEY) return;
 
   await resend.emails.send({
     from: emailConfig.from,
     to: emailConfig.adminOrderEmail,
-    subject: `New order received - ${payload.orderNumber}`,
-    react: (
-      <AdminNewOrderEmail
-        orderNumber={payload.orderNumber}
-        customerName={payload.customerName}
-        customerPhone={payload.customerPhone}
-        customerEmail={payload.customerEmail}
-        total={payload.total}
-      />
-    ),
+    subject: `New order placed - ${orderNumber}`,
+    react: AdminNewOrderEmail({
+      orderNumber,
+      customerName,
+      customerEmail,
+      customerPhone,
+      total,
+    }),
   });
 }

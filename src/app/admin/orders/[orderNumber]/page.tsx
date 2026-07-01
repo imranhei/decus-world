@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getAdminOrderByNumber } from "@/server/queries/order-queries";
 import { OrderStatusForm } from "@/features/admin/orders/order-status-form";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 type PageProps = {
   params: Promise<{
@@ -60,7 +61,12 @@ export default async function AdminOrderDetailsPage({ params }: PageProps) {
               className="flex justify-between gap-4 border-b pb-4 last:border-0 last:pb-0"
             >
               <div>
-                <p className="font-medium">{item.productName}</p>
+                <Link
+                  href={`/products/${item.product.slug}`}
+                  className="font-medium text-teal-500 hover:underline"
+                >
+                  {item.productName}
+                </Link>
                 <p className="text-sm text-muted-foreground">
                   SKU: {item.sku || "N/A"} · {item.size} / {item.color} · Qty{" "}
                   {item.quantity}
