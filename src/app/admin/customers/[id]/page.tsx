@@ -120,7 +120,7 @@ export default async function AdminCustomerDetailsPage({ params }: PageProps) {
                 <Badge>{order.status}</Badge>
                 <p className="font-semibold">৳{Number(order.total)}</p>
 
-                <Button size="sm" variant="outline">
+                <Button size="sm" variant="outline" className="h-10 rounded-full px-6 text-sm text-teal-500">
                   <Link href={`/admin/orders/${order.orderNumber}`}>View</Link>
                 </Button>
               </div>

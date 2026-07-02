@@ -56,7 +56,7 @@ export function ReviewForm({ productId }: { productId: string }) {
         />
       </div>
 
-      <Button disabled={isPending} type="submit">
+      <Button disabled={isPending} type="submit" className="h-10 rounded-full px-6 text-sm">
         {isPending ? "Submitting..." : "Submit Review"}
       </Button>
     </form>

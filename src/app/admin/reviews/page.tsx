@@ -8,6 +8,7 @@ import {
 import { StarRating } from "@/components/shared/star-rating";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Check, Trash2 } from "lucide-react";
 
 export default async function AdminReviewsPage() {
   const reviews = await getAdminReviews();
@@ -56,7 +57,9 @@ export default async function AdminReviewsPage() {
                       await approveReviewAction(review.id);
                     }}
                   >
-                    <Button size="sm">Approve</Button>
+                    <Button size="sm" className="h-8 rounded-full px-6 text-xs">
+                      <Check /> Approve
+                    </Button>
                   </form>
                 ) : null}
 
@@ -66,8 +69,8 @@ export default async function AdminReviewsPage() {
                     await rejectReviewAction(review.id);
                   }}
                 >
-                  <Button size="sm" variant="destructive">
-                    Delete
+                  <Button size="sm" variant="destructive" className="h-8 rounded-full px-6 text-xs flex items-center gap-2">
+                    <Trash2/> Delete
                   </Button>
                 </form>
               </div>

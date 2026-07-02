@@ -297,7 +297,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               </p>
             </div>
 
-            <Button type="button" variant="outline" onClick={addVariantRow}>
+            <Button type="button" variant="outline" onClick={addVariantRow} className="h-8 rounded-full px-4 text-sm">
               Add Variant
             </Button>
           </div>
@@ -455,7 +455,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         </label>
       </div>
 
-      <Button disabled={isPending} type="submit">
+      <Button disabled={isPending} type="submit" className="h-10 rounded-full px-6 text-sm">
         {isPending
           ? "Saving..."
           : product

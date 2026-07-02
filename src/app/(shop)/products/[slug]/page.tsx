@@ -218,7 +218,7 @@ export default async function ProductDetailsPage({
               alt="Size chart"
               buttonText="Size Chart"
               icon={<Ruler className="mr-2 h-4 w-4" />}
-              buttonClassName="mt-6 h-12 w-48 rounded-none border-black"
+              buttonClassName="h-10 rounded-full text-sm mt-6 px-6 text-teal-600 border border-teal-600 hover:bg-teal-500 hover:text-white"
             />
 
             <div className="mt-6">
@@ -339,7 +339,7 @@ export default async function ProductDetailsPage({
             {session?.user ? (
               <ReviewForm productId={product.id} />
             ) : (
-              <Button className="w-full bg-orange-600 hover:bg-orange-700">
+              <Button className="w-full bg-orange-600 h-10 rounded-full hover:bg-orange-700 px-6 text-sm">
                 <Link href="/login">Write a review</Link>
               </Button>
             )}

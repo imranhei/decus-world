@@ -15,7 +15,7 @@ export default async function WishlistPage() {
           Save your favorite products and find them here later.
         </p>
 
-        <Button className="mt-6">
+        <Button className="h-10 mt-6 rounded-full px-6 text-sm">
           <Link href="/products">Browse Products</Link>
         </Button>
       </div>

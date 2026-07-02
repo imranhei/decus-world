@@ -111,14 +111,14 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <p className="text-sm font-semibold">Filters</p>
 
-          <button
-            type="button"
+          <Button
+            variant="destructive"
             onClick={clearFilters}
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            className="inline-flex items-center gap-2 text-sm rounded-full px-4 h-8"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="size-3.5" />
             Clear all
-          </button>
+          </Button>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-3">
@@ -127,11 +127,11 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
             variant="outline"
             onClick={() => toggleParam("featured")}
             className={cn(
-              "h-11 rounded-xl",
+              "h-8 rounded-full text-sm px-4",
               isFeatured && "border-amber-500 bg-amber-50 text-amber-700",
             )}
           >
-            <Sparkles className="mr-2 h-4 w-4" />
+            <Sparkles className="mr-1 h-4 w-4" />
             Featured
           </Button>
 
@@ -140,10 +140,11 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
             variant="outline"
             onClick={() => toggleParam("newArrival")}
             className={cn(
-              "h-11 rounded-xl",
+              "h-8 rounded-full text-sm px-4",
               isNewArrival && "border-black bg-black text-white",
             )}
-          >
+          > 
+          <div className="size-3 bg-black rounded-full mr-1"></div>
             New Arrival
           </Button>
 
@@ -152,11 +153,11 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
             variant="outline"
             onClick={() => toggleParam("bestSeller")}
             className={cn(
-              "h-11 rounded-xl",
+              "h-8 rounded-full text-sm px-4",
               isBestSeller && "border-black bg-black text-white",
             )}
           >
-            <Trophy className="mr-2 h-4 w-4" />
+            <Trophy className="mr-1 h-4 w-4" />
             Best Seller
           </Button>
         </div>

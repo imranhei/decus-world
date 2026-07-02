@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { auth } from "../../../auth";
 import { Button } from "@/components/ui/button";
+import { Store } from "lucide-react";
 
 export async function AdminTopbar() {
   const session = await auth();
@@ -12,8 +13,8 @@ export async function AdminTopbar() {
         <p className="text-muted-foreground">Admin Panel</p>
       </div>
 
-      <Button variant="outline">
-        <Link href="/">View Store</Link>
+      <Button variant="outline" className="h-10 rounded-full px-6 text-sm gap-2 text-teal-500">
+       <Store /> <Link href="/">View Store</Link>
       </Button>
     </header>
   );

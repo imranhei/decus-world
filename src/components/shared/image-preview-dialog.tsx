@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 type ImagePreviewDialogProps = {
   image: StaticImageData | string;
@@ -37,7 +38,7 @@ export function ImagePreviewDialog({
         type="button"
         variant="outline"
         onClick={() => setOpen(true)}
-        className={buttonClassName}
+        className={cn(buttonClassName)}
       >
         {icon || <ImageIcon className="mr-2 h-4 w-4" />}
         {buttonText}

@@ -66,7 +66,7 @@ export function SingleImageUpload({
         }}
       >
         {({ open }) => (
-          <Button type="button" variant="outline" onClick={() => open()}>
+          <Button type="button" variant="outline" onClick={() => open()} className="h-10 rounded-full px-6 text-sm" disabled={isPending}>
             <ImagePlus className="mr-2 h-4 w-4" />
             Upload Image
           </Button>

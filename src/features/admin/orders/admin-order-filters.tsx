@@ -47,7 +47,7 @@ export function AdminOrderFilters() {
             type="button"
             variant="destructive"
             onClick={clearFilters}
-            className="h-10 rounded-xl w-auto sm:w-40"
+            className="h-10 rounded-full text-sm w-auto sm:w-40"
           >
             <RotateCcw className="mr-1 h-4 w-4" />
             Reset

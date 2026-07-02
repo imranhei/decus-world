@@ -3,6 +3,7 @@ import { z } from "zod";
 export const bannerSchema = z.object({
   title: z.string().min(2, "Title is required"),
   subtitle: z.string().optional(),
+  description: z.string().optional(),
   image: z.object({
     url: z.string().url(),
     publicId: z.string().optional(),

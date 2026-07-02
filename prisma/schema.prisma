@@ -434,6 +434,7 @@ model Banner {
 
   title      String
   subtitle   String?
+  description String?
   imageUrl      String
   imagePublicId String?
   linkUrl    String?

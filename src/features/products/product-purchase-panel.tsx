@@ -190,7 +190,7 @@ export function ProductPurchasePanel({
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 grid grid-cols-2">
         <AddToCartButton
           isLoggedIn={isLoggedIn}
           quantity={quantity}
@@ -209,7 +209,7 @@ export function ProductPurchasePanel({
           type="button"
           disabled={isOutOfStock}
           onClick={handleBuyNow}
-          className="h-14 w-full rounded-none bg-black text-white hover:bg-black/90"
+          className="h-10 rounded-full text-sm"
         >
           <ShoppingBag className="mr-2 h-4 w-4" />
           Buy it now

@@ -80,7 +80,7 @@ export default async function AdminCustomersPage({ searchParams }: PageProps) {
                 </td>
 
                 <td className="px-4 py-3 text-right">
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" >
                     <Link href={`/admin/customers/${customer.id}`}>View</Link>
                   </Button>
                 </td>

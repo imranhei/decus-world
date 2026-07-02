@@ -43,6 +43,7 @@ export async function createBannerAction(values: unknown) {
     data: {
       title: data.title,
       subtitle: data.subtitle || null,
+      description: data.description || null,
       imageUrl: data.image.url,
       imagePublicId: data.image.publicId || null,
       linkUrl: data.linkUrl || null,
@@ -81,6 +82,7 @@ export async function updateBannerAction(bannerId: string, values: unknown) {
     data: {
       title: data.title,
       subtitle: data.subtitle || null,
+      description: data.description || null,
       imageUrl: data.image.url,
       imagePublicId: data.image.publicId || null,
       linkUrl: data.linkUrl || null,

@@ -43,7 +43,7 @@ export async function ShopNavbar() {
           <ShopNavLinks />
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center sm:gap-2 gap-1">
           <CartIconButton
             serverCount={cartCount}
             isLoggedIn={Boolean(session?.user)}

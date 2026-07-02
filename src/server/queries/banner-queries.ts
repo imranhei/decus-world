@@ -1,16 +1,37 @@
 import { prisma } from "@/lib/prisma";
+import type { BannerPosition } from "@prisma/client";
 
-export async function getActiveBanner(position: "HOME_HERO" | "HOME_SECTION") {
+export async function getActiveBanners(position: BannerPosition) {
   const now = new Date();
 
-  return prisma.banner.findFirst({
+  return prisma.banner.findMany({
     where: {
       position,
       isActive: true,
-      OR: [{ startsAt: null }, { startsAt: { lte: now } }],
-      AND: [
+      OR: [
         {
-          OR: [{ endsAt: null }, { endsAt: { gte: now } }],
+          startsAt: null,
+          endsAt: null,
+        },
+        {
+          startsAt: {
+            lte: now,
+          },
+          endsAt: null,
+        },
+        {
+          startsAt: null,
+          endsAt: {
+            gte: now,
+          },
+        },
+        {
+          startsAt: {
+            lte: now,
+          },
+          endsAt: {
+            gte: now,
+          },
         },
       ],
     },

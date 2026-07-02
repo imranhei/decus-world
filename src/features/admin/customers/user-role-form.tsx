@@ -46,7 +46,7 @@ export function UserRoleForm({
         ))}
       </select>
 
-      <Button size="sm" disabled={isPending} onClick={handleUpdate}>
+      <Button size="sm" disabled={isPending} onClick={handleUpdate} className="h-10 rounded-full px-6 text-sm">
         {isPending ? "Saving..." : "Update Role"}
       </Button>
 

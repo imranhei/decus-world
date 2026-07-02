@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MdHideImage, MdVisibility } from "react-icons/md";
 
-import { getAdminBanners } from "@/server/queries/admin-banner-queries";
-import { toggleBannerStatusAction } from "@/server/actions/admin-banner-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { toggleBannerStatusAction } from "@/server/actions/admin-banner-actions";
+import { getAdminBanners } from "@/server/queries/admin-banner-queries";
+import { Edit, ImagePlus } from "lucide-react";
 
 export default async function AdminBannersPage() {
   const banners = await getAdminBanners();
@@ -19,7 +21,8 @@ export default async function AdminBannersPage() {
           </p>
         </div>
 
-        <Button>
+        <Button className="h-10 rounded-full px-6 text-sm flex items-center gap-2">
+          <ImagePlus />
           <Link href="/admin/banners/new">Add Banner</Link>
         </Button>
       </div>
@@ -84,9 +87,9 @@ export default async function AdminBannersPage() {
 
                 <td className="px-4 py-3 text-right">
                   <div className="flex justify-end gap-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" className="text-teal-500">
                       <Link href={`/admin/banners/${banner.id}/edit`}>
-                        Edit
+                        <Edit />
                       </Link>
                     </Button>
 
@@ -96,8 +99,8 @@ export default async function AdminBannersPage() {
                         await toggleBannerStatusAction(banner.id);
                       }}
                     >
-                      <Button size="sm" variant="secondary">
-                        {banner.isActive ? "Disable" : "Enable"}
+                      <Button size="sm" variant="outline" type="submit">
+                        {banner.isActive ? <MdHideImage className="text-red-500 size-4" /> : <MdVisibility className="text-blue-500 size-4"/>}
                       </Button>
                     </form>
                   </div>

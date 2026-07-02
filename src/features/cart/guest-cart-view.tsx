@@ -19,7 +19,7 @@ export function GuestCartView() {
     return (
       <div className="rounded-xl border p-10 text-center">
         <h1 className="text-2xl font-bold">Your cart is empty</h1>
-        <Button className="mt-6">
+        <Button className="mt-6 h-10 rounded-full px-6 text-sm">
           <Link href="/products">Continue Shopping</Link>
         </Button>
       </div>
@@ -100,7 +100,7 @@ export function GuestCartView() {
           <span className="font-bold">৳{subtotal}</span>
         </div>
 
-        <Button className="mt-6 w-full">
+        <Button className="mt-6 w-full h-10 rounded-full text-sm">
           <Link href="/login">Login to Checkout</Link>
         </Button>
       </aside>

@@ -163,7 +163,7 @@ export function CouponForm({ coupon }: CouponFormProps) {
         Active coupon
       </label>
 
-      <Button disabled={isPending} type="submit">
+      <Button disabled={isPending} type="submit" className="h-10 rounded-full px-6 text-sm">
         {isPending
           ? "Saving..."
           : coupon

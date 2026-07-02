@@ -19,7 +19,7 @@ export default async function AdminCategoriesPage() {
           </p>
         </div>
 
-        <Button>
+        <Button className="h-10 rounded-full px-6 text-sm">
           <Link href="/admin/categories/new">Add Category</Link>
         </Button>
       </div>

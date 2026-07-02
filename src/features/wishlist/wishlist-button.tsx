@@ -66,7 +66,7 @@ export function WishlistButton({
       <Button
         type="button"
         variant="outline"
-        size="lg"
+        className="h-10 rounded-full px-4 text-sm"
         disabled={isPending}
         onClick={handleClick}
       >

@@ -75,7 +75,7 @@ export function CouponForm({
       ) : (
         <form action={handleApply} className="flex gap-2">
           <Input name="code" placeholder="WELCOME10" />
-          <Button disabled={isPending} type="submit">
+          <Button disabled={isPending} type="submit" className="h-10 rounded-full px-6 text-sm">
             {isPending ? "Applying..." : "Apply"}
           </Button>
         </form>

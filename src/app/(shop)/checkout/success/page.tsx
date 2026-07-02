@@ -28,11 +28,11 @@ export default async function CheckoutSuccessPage({
       ) : null}
 
       <div className="mt-8 flex gap-3">
-        <Button>
+        <Button className="h-10 rounded-full px-6 text-sm">
           <Link href="/account/orders">View Orders</Link>
         </Button>
 
-        <Button variant="outline">
+        <Button variant="outline" className="h-10 rounded-full px-6 text-sm">
           <Link href="/products">Continue Shopping</Link>
         </Button>
       </div>

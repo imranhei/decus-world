@@ -22,7 +22,7 @@ export default async function AccountOrdersPage() {
           Your order history will appear here.
         </p>
 
-        <Button className="mt-6">
+        <Button className="h-10 mt-6 rounded-full px-6 text-sm">
           <Link href="/products">Start Shopping</Link>
         </Button>
       </div>

@@ -157,7 +157,7 @@ export function AddToCartButton({
       <Button
         type="button"
         size="lg"
-        className="h-10 w-full"
+        className="h-10 w-full rounded-full"
         disabled={isPending}
         onClick={handleAddToCart}
       >

@@ -87,7 +87,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
           <Button
             type="submit"
             disabled={isPending}
-            className="h-10 w-full rounded-xl bg-zinc-950 text-white hover:bg-zinc-800"
+            className="h-10 w-full rounded-full bg-zinc-950 text-white hover:bg-zinc-800"
           >
             {isPending ? "Resetting..." : "Reset password"}
           </Button>

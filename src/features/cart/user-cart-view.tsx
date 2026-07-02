@@ -31,7 +31,7 @@ export function UserCartView({ items, appliedCoupon }: UserCartViewProps) {
       <div className="rounded-xl border p-10 text-center">
         <h1 className="text-2xl font-bold">Your cart is empty</h1>
 
-        <Button className="mt-6">
+        <Button className="mt-6 h-10 rounded-full px-6 text-sm">
           <Link href="/products">Continue Shopping</Link>
         </Button>
       </div>
@@ -106,7 +106,7 @@ export function UserCartView({ items, appliedCoupon }: UserCartViewProps) {
           discount={discount}
         />
 
-        <Button className="mt-6 w-full">
+        <Button className="mt-6 w-full h-10 rounded-full text-sm">
           <Link href="/checkout">Checkout</Link>
         </Button>
       </aside>

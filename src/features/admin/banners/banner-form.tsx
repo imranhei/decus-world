@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import type { Banner } from "@prisma/client";
+import { useState, useTransition } from "react";
 
-import {
-  createBannerAction,
-  updateBannerAction,
-} from "@/server/actions/admin-banner-actions";
+import { RequiredLabel } from "@/components/shared/required-label";
 import {
   SingleImageUpload,
   type SingleImageValue,
@@ -14,7 +11,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RequiredLabel } from "@/components/shared/required-label";
+import {
+  createBannerAction,
+  updateBannerAction,
+} from "@/server/actions/admin-banner-actions";
 
 type BannerFormProps = {
   banner?: Banner;
@@ -35,7 +35,7 @@ export function BannerForm({ banner }: BannerFormProps) {
           url: banner.imageUrl,
           publicId: banner.imagePublicId || undefined,
         }
-      : null
+      : null,
   );
 
   function handleSubmit(formData: FormData) {
@@ -49,6 +49,7 @@ export function BannerForm({ banner }: BannerFormProps) {
     const values = {
       title: formData.get("title"),
       subtitle: formData.get("subtitle"),
+      description: formData.get("description"),
       image,
       linkUrl: formData.get("linkUrl"),
       buttonText: formData.get("buttonText"),
@@ -99,6 +100,16 @@ export function BannerForm({ banner }: BannerFormProps) {
         <div className="space-y-2 md:col-span-2">
           <Label>Subtitle</Label>
           <Input name="subtitle" defaultValue={banner?.subtitle || ""} />
+        </div>
+
+        <div className="space-y-2 md:col-span-2">
+          <Label>Description</Label>
+          <textarea
+            name="description"
+            defaultValue={banner?.description || ""}
+            placeholder="Write a short promotional banner description..."
+            className="min-h-24 w-full rounded-md border bg-background px-3 py-2 text-sm"
+          />
         </div>
 
         <div className="space-y-2">
@@ -156,12 +167,8 @@ export function BannerForm({ banner }: BannerFormProps) {
         Active banner
       </label>
 
-      <Button disabled={isPending} type="submit">
-        {isPending
-          ? "Saving..."
-          : banner
-            ? "Update Banner"
-            : "Create Banner"}
+      <Button disabled={isPending} type="submit" className="h-10 rounded-full px-6 text-sm">
+        {isPending ? "Saving..." : banner ? "Update Banner" : "Create Banner"}
       </Button>
     </form>
   );

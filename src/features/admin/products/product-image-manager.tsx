@@ -99,7 +99,7 @@ export function ProductImageManager({
         }}
       >
         {({ open }) => (
-          <Button type="button" variant="outline" onClick={() => open()}>
+          <Button type="button" variant="outline" onClick={() => open()} className="h-8 rounded-full px-4 text-sm">
             <ImagePlus className="mr-2 h-4 w-4" />
             Upload Images
           </Button>

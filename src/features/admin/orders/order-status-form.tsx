@@ -57,7 +57,7 @@ export function OrderStatusForm({
           ))}
         </select>
 
-        <Button disabled={isPending} onClick={handleUpdate}>
+        <Button disabled={isPending} onClick={handleUpdate} className="h-10 rounded-full px-6 text-sm">
           {isPending ? "Updating..." : "Update"}
         </Button>
       </div>
