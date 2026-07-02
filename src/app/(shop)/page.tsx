@@ -29,7 +29,7 @@ export default async function HomePage() {
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
               Featured
             </p>
-            <h2 className="mt-2 text-3xl font-bold">Featured Products</h2>
+            <h2 className="mt-2 sm:text-3xl text-2xl font-bold">Featured Products</h2>
           </div>
 
           <Button variant="outline" className="h-10 rounded-full px-6 text-sm">

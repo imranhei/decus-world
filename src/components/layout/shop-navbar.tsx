@@ -36,7 +36,7 @@ export async function ShopNavbar() {
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
       <div className="flex max-w-7xl h-16 mx-auto items-center justify-between gap-3 px-4">
         <Link href="/" className="text-xl font-bold">
-          Decus World
+          D|W<span className="sm:block hidden">Decus World</span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">

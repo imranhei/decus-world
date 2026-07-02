@@ -1,6 +1,7 @@
 import type { Category, Product, ProductImage } from "@prisma/client";
 
-import { ProductCard } from "@/components/product/product-card";
+// import { ProductCard } from "@/components/product/product-card";
+import { FeaturedProductSlider } from "@/components/product/featured-product-slider";
 
 type ProductGridProps = {
   products: Array<
@@ -21,10 +22,11 @@ export function ProductGrid({ products }: ProductGridProps) {
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {products.map((product) => (
+    <div className="grid sm:gap-6 gap-2 grid-cols-1! lg:grid-cols-4">
+      {/* {products.map((product) => (
         <ProductCard key={product.id} product={product} />
-      ))}
+      ))} */}
+      <FeaturedProductSlider products={products} />
     </div>
   );
 }

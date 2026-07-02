@@ -69,7 +69,7 @@ export function HomeHeroSlider({ banners }: HomeHeroSliderProps) {
                 initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 }}
-                className="mt-4 text-5xl font-bold tracking-tight lg:text-7xl"
+                className="mt-4 sm:text-5xl text-4xl font-bold tracking-tight lg:text-7xl"
               >
                 {banner.subtitle}
               </motion.h1>
@@ -124,8 +124,10 @@ export function HomeHeroSlider({ banners }: HomeHeroSliderProps) {
                 transition={{
                   duration: 5,
                   ease: "linear",
+                  repeat: Infinity,
+                  repeatType: "reverse",
                 }}
-                className="relative aspect-square"
+                className="relative h-75 sm:h-95 md:h-112 lg:h-130 xl:h-150"
               >
                 <Image
                   src={banner.imageUrl}
@@ -133,6 +135,7 @@ export function HomeHeroSlider({ banners }: HomeHeroSliderProps) {
                   fill
                   priority
                   className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </motion.div>
             </motion.div>
