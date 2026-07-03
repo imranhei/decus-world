@@ -1,18 +1,16 @@
-import Link from "next/link";
 import {
   AlertTriangle,
-  Boxes,
-  Clock,
   Package,
   ShoppingCart,
   Users,
   Wallet,
 } from "lucide-react";
+import Link from "next/link";
 
-import { getAdminDashboardStats } from "@/server/queries/admin-dashboard-queries";
-import { StatCard } from "@/features/admin/dashboard/stat-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { StatCard } from "@/features/admin/dashboard/stat-card";
+import { getAdminDashboardStats } from "@/server/queries/admin-dashboard-queries";
 
 export default async function AdminDashboardPage() {
   const stats = await getAdminDashboardStats();
@@ -66,7 +64,11 @@ export default async function AdminDashboardPage() {
               </p>
             </div>
 
-            <Button size="sm" variant="outline" className="h-10 rounded-full px-6 text-sm text-teal-500">
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-10 rounded-full px-6 text-sm text-teal-500"
+            >
               <Link href="/admin/orders">View All</Link>
             </Button>
           </div>
@@ -168,7 +170,10 @@ export default async function AdminDashboardPage() {
                     </Badge>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Button size="sm" variant="outline" className="text-teal-500 h-8 rounded-full px-4 text-xs">
+                    <Button
+                      size="sm"
+                      className="bg-teal-700 h-8 rounded-full px-4 text-xs"
+                    >
                       <Link href={`/admin/products/${variant.productId}/edit`}>
                         Update
                       </Link>

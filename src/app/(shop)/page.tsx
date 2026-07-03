@@ -6,7 +6,6 @@ import { HomeHeroSlider } from "@/features/home/home-hero-slider";
 import { HomeSectionBanner } from "@/features/home/home-section-banner";
 import { getActiveBanners } from "@/server/queries/banner-queries";
 import { getFeaturedProducts } from "@/server/queries/product-queries";
-import Image from "next/image";
 
 export default async function HomePage() {
   const [featuredProducts, heroBanners, sectionBanners] = await Promise.all([

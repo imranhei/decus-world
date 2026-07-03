@@ -1,5 +1,5 @@
 import SizeChart from "@/assets/size-chart.png";
-import { Heart, Ruler } from "lucide-react";
+import { Ruler } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -16,6 +16,7 @@ import { createBreadcrumbJsonLd, createProductJsonLd } from "@/lib/seo";
 import { getProductBySlug } from "@/server/queries/product-queries";
 import { isProductWishlisted } from "@/server/queries/wishlist-queries";
 import { auth } from "../../../../../auth";
+import { getCloudinaryImageUrl } from "@/lib/cloudinary-image";
 
 type ProductDetailsPageProps = {
   params: Promise<{
@@ -144,7 +145,7 @@ export default async function ProductDetailsPage({
               <div className="relative aspect-4/5 w-full">
                 {mainImage ? (
                   <Image
-                    src={mainImage.url}
+                    src={getCloudinaryImageUrl(mainImage.url, 600, 600)}
                     alt={mainImage.altText || product.name}
                     fill
                     className="object-cover"

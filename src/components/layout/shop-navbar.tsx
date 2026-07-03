@@ -15,13 +15,6 @@ import { getCurrentUserCartCount } from "@/server/queries/cart-queries";
 import { auth } from "../../../auth";
 import { ShopNavLinks } from "./shop-nav-links";
 
-const navLinks = [
-  { title: "Products", href: "/products" },
-  { title: "Men", href: "/products?category=men" },
-  { title: "Women", href: "/products?category=women" },
-  { title: "Our Story", href: "/our-story" },
-];
-
 export async function ShopNavbar() {
   const session = await auth();
   const cartCount = session?.user ? await getCurrentUserCartCount() : 0;
@@ -35,7 +28,7 @@ export async function ShopNavbar() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
       <div className="flex max-w-7xl h-16 mx-auto items-center justify-between gap-3 px-4">
-        <Link href="/" className="text-xl font-bold">
+        <Link href="/" className="text-xl font-bold flex items-center gap-2">
           D|W<span className="sm:block hidden">Decus World</span>
         </Link>
 
@@ -89,7 +82,7 @@ export async function ShopNavbar() {
                   <Button
                     variant="destructive"
                     type="submit"
-                    className="w-full justify-start"
+                    className="w-full justify-start rounded-full px-4 h-10"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout

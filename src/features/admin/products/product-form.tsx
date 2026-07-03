@@ -13,21 +13,16 @@ import {
   type ProductImageInput,
 } from "./product-image-manager";
 
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 import { RequiredLabel } from "@/components/shared/required-label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   createProductAction,
   updateProductAction,
 } from "@/server/actions/admin-product-actions";
-import { Info, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 
 type ProductFormProps = {
   categories: Category[];
@@ -165,32 +160,22 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           <div className="flex items-center gap-2 h-3">
             <RequiredLabel>Slug</RequiredLabel>
 
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div className="text-muted-foreground">
-                    <Info className="h-4 w-4" />
-                  </div>
-                </TooltipTrigger>
-
-                <TooltipContent className="max-w-xs flex flex-col">
-                  <p>
-                    Slug is the clean URL name of the product. It helps SEO and
-                    makes product links readable.
-                  </p>
-                  <p className="mt-2">
-                    Example web address:{" "}
-                    <strong>
-                      (BaseURL)/products/mens-blue-cotton-formal-shirt
-                    </strong>
-                  </p>
-                  <p className="mt-2">
-                    Use lowercase letters, numbers, and hyphens only. Example:
-                    <strong> mens-blue-cotton-formal-shirt</strong>
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <InfoTooltip>
+              <p>
+                Slug is the clean URL name of the product. It helps SEO and
+                makes product links readable.
+              </p>
+              <p className="mt-2">
+                Example web address:{" "}
+                <strong>
+                  (BaseURL)/products/mens-blue-cotton-formal-shirt
+                </strong>
+              </p>
+              <p className="mt-2">
+                Use lowercase letters, numbers, and hyphens only. Example:
+                <strong> mens-blue-cotton-formal-shirt</strong>
+              </p>
+            </InfoTooltip>
           </div>
 
           <Input
@@ -254,31 +239,20 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           <div className="flex h-5 items-center gap-1.5">
             <Label className="leading-none">Base SKU</Label>
 
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div className="inline-flex h-4 w-4 items-center justify-center text-muted-foreground">
-                    <Info className="h-3.5 w-3.5" />
-                  </div>
-                </TooltipTrigger>
-
-                <TooltipContent className="max-w-xs flex flex-col">
-                  <p>
-                    Base SKU is the main product code used for inventory,
-                    tracking, and internal identification.
-                  </p>
-                  <p className="mt-2">
-                    Variant SKUs can be generated from this base code with
-                    size/color.
-                  </p>
-                  <p className="mt-2">
-                    Example: <strong>FSHIRT-BLACK</strong> →{" "}
-                    <strong>FSHIRT-BLACK-M</strong>,{" "}
-                    <strong>FSHIRT-BLACK-L</strong>
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <InfoTooltip>
+              <p>
+                Base SKU is the main product code used for inventory, tracking,
+                and internal identification.
+              </p>
+              <p className="mt-2">
+                Variant SKUs can be generated from this base code with
+                size/color.
+              </p>
+              <p className="mt-2">
+                Example: <strong>FSHIRT-BLACK</strong> →{" "}
+                <strong>FSHIRT-BLACK-M</strong>, <strong>FSHIRT-BLACK-L</strong>
+              </p>
+            </InfoTooltip>
           </div>
 
           <Input
@@ -297,7 +271,12 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               </p>
             </div>
 
-            <Button type="button" variant="outline" onClick={addVariantRow} className="h-8 rounded-full px-4 text-sm">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addVariantRow}
+              className="h-8 rounded-full px-4 text-sm"
+            >
               Add Variant
             </Button>
           </div>
@@ -455,7 +434,11 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         </label>
       </div>
 
-      <Button disabled={isPending} type="submit" className="h-10 rounded-full px-6 text-sm">
+      <Button
+        disabled={isPending}
+        type="submit"
+        className="h-10 rounded-full px-6 text-sm"
+      >
         {isPending
           ? "Saving..."
           : product

@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { getCloudinaryImageUrl } from "@/lib/cloudinary-image";
+
 
 type HomeHeroSliderProps = {
   banners: Banner[];
@@ -130,7 +132,7 @@ export function HomeHeroSlider({ banners }: HomeHeroSliderProps) {
                 className="relative h-75 sm:h-95 md:h-112 lg:h-130 xl:h-150"
               >
                 <Image
-                  src={banner.imageUrl}
+                  src={getCloudinaryImageUrl(banner.imageUrl, 600)}
                   alt={banner.title}
                   fill
                   priority

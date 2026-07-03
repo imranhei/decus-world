@@ -115,7 +115,7 @@ export function AdminSidebar() {
           </button>
         </div>
 
-      <nav className="space-y-1 p-4">
+      <nav className="space-y-1 p-3">
         {adminLinks.map((item) => {
           const Icon = item.icon;
 
@@ -123,11 +123,12 @@ export function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium ${
+              className={`flex items-center gap-3 rounded-full px-3 py-2 text-sm font-medium ${
                 pathname === item.href
                   ? "border-l-2 border-blue-500 bg-white/10 text-white"
                   : "border-l-2 border-transparent text-zinc-300 hover:bg-white/10 hover:text-white"
               }`}
+              onClick={() => setOpen(false)}
             >
               <Icon className="h-4 w-4" />
               {item.title}
@@ -136,7 +137,7 @@ export function AdminSidebar() {
         })}
       </nav>
 
-      <div className="absolute bottom-6 left-4 right-4">
+      <div className="absolute bottom-6 left-3 right-3">
         <LogoutButton className="text-black" />
       </div>
     </aside>

@@ -7,8 +7,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 const navLinks = [
   { title: "Home", href: "/" },
   { title: "Products", href: "/products" },
-  { title: "Men", href: "/products?category=men" },
-  { title: "Women", href: "/products?category=women" },
+  // { title: "Men", href: "/products?category=men" },
+  // { title: "Women", href: "/products?category=women" },
   { title: "Our Story", href: "/our-story" },
 ];
 
@@ -32,13 +32,13 @@ export function ShopNavLinks({ mobile = false }: { mobile?: boolean }) {
             active = pathname === "/products" && !category;
             break;
 
-          case "Men":
-            active = pathname === "/products" && category === "men";
-            break;
+          // case "Men":
+          //   active = pathname === "/products" && category === "men";
+          //   break;
 
-          case "Women":
-            active = pathname === "/products" && category === "women";
-            break;
+          // case "Women":
+          //   active = pathname === "/products" && category === "women";
+          //   break;
 
           default:
             active = pathname === item.href;

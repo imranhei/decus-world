@@ -20,7 +20,7 @@ export function LogoutButton({ className }: LogoutButtonProps) {
       variant="outline"
       disabled={isPending}
       onClick={() => startTransition(() => logoutAction())}
-      className={cn(className, "h-8 rounded-full px-4 text-xs")}
+      className={cn(className, "h-8 rounded-full px-4 text-xs w-full")}
     >
       <LogOut className="mr-2 h-4 w-4" />
       {isPending ? "Logging out..." : "Logout"}

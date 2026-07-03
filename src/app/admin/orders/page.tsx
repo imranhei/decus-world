@@ -3,8 +3,16 @@ import Link from "next/link";
 import { Pagination } from "@/components/shared/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { AdminOrderFilters } from "@/features/admin/orders/admin-order-filters";
+import { AdminOrdersTable } from "@/features/admin/orders/admin-orders-table";
 import { getAdminOrders } from "@/server/queries/order-queries";
+import { MoreHorizontal } from "lucide-react";
 
 type PageProps = {
   searchParams: Promise<{
@@ -43,73 +51,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
 
       <AdminOrderFilters />
 
-      <div className="overflow-hidden rounded-xl border bg-background">
-        <table className="w-full text-sm">
-          <thead className="border-b bg-muted">
-            <tr>
-              <th className="px-4 py-3 text-left">Order</th>
-              <th className="px-4 py-3 text-left">Customer</th>
-              <th className="px-4 py-3 text-left">Status</th>
-              <th className="px-4 py-3 text-left">Payment</th>
-              <th className="px-4 py-3 text-left">Total</th>
-              <th className="px-4 py-3 text-left">Date</th>
-              <th className="px-4 py-3 text-right">Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order.id} className="border-b last:border-0">
-                <td className="px-4 py-3 font-medium">{order.orderNumber}</td>
-
-                <td className="px-4 py-3">
-                  <p>{order.customerName}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {order.customerPhone}
-                  </p>
-                </td>
-
-                <td className="px-4 py-3">
-                  <Badge>{order.status}</Badge>
-                </td>
-
-                <td className="px-4 py-3">
-                  <p>{order.paymentMethod}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {order.paymentStatus}
-                  </p>
-                </td>
-
-                <td className="px-4 py-3 font-semibold">
-                  ৳{Number(order.total)}
-                </td>
-
-                <td className="px-4 py-3">
-                  {new Date(order.createdAt).toLocaleDateString()}
-                </td>
-
-                <td className="px-4 py-3 text-right">
-                  <Button size="sm" variant="outline">
-                    <Link href={`/admin/orders/${order.orderNumber}`}>
-                      View
-                    </Link>
-                  </Button>
-                </td>
-              </tr>
-            ))}
-
-            {!orders.length ? (
-              <tr>
-                <td
-                  colSpan={6}
-                  className="px-4 py-10 text-center text-muted-foreground"
-                >
-                  No orders found.
-                </td>
-              </tr>
-            ) : null}
-          </tbody>
-        </table>
+      <AdminOrdersTable orders={orders} />
 
         <Pagination
           page={orderResult.page}
@@ -118,6 +60,5 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
           searchParams={params}
         />
       </div>
-    </div>
   );
 }

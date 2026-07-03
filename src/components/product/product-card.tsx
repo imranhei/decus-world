@@ -1,11 +1,12 @@
 import type { Category, Product, ProductImage } from "@prisma/client";
-import { ChevronRight, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { WishlistButton } from "@/features/wishlist/wishlist-button";
 import { auth } from "../../../auth";
 import { Button } from "../ui/button";
+import { getCloudinaryImageUrl } from "@/lib/cloudinary-image";
 
 type ProductCardProps = {
   product: Product & {
@@ -28,9 +29,10 @@ export async function ProductCard({
       <div className="relative aspect-square overflow-hidden bg-muted">
         {image ? (
           <Image
-            src={image.url}
+            src={getCloudinaryImageUrl(image.url, 600, 600)}
             alt={image.altText || product.name}
             fill
+            // sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
             className="object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
@@ -86,15 +88,13 @@ export async function ProductCard({
             href={`/products/${product.slug}`}
             className="flex items-center sm:gap-2 gap-0 sm:text-sm text-xs font-medium text-teal-500 transition-all sm:group-hover:gap-3 group-hover:gap-1"
           >
-            <span className="sm:block hidden">View Details</span>{" "}
             <Button
               variant="outline"
               size="sm"
-              className="sm:hidden p-2 rounded-full flex items-center justify-center text-xs gap-2"
+              className="p-2 sm:px-4 rounded-full flex items-center justify-center text-xs gap-2"
             >
               <ShoppingCart size={16} /> SHOP
             </Button>
-            <ChevronRight className="h-4 w-4 sm:block hidden" />
           </Link>
         </div>
       </div>

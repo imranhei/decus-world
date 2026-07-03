@@ -5,19 +5,13 @@ import {
   type SingleImageValue,
 } from "@/components/shared/single-image-upload";
 import type { Category } from "@prisma/client";
-import { Info } from "lucide-react";
 import { useState, useTransition } from "react";
 
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 import { RequiredLabel } from "@/components/shared/required-label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   createCategoryAction,
   updateCategoryAction,
@@ -89,29 +83,21 @@ export function CategoryForm({
           <div className="flex h-3 items-center gap-2">
             <RequiredLabel>Slug</RequiredLabel>
 
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <div className="inline-flex h-4 w-4 items-center justify-center text-muted-foreground">
-                    <Info className="h-3.5 w-3.5 mt-1" />
-                  </div>
-                </TooltipTrigger>
+            <InfoTooltip>
+              <p>
+                Slug is the clean URL name of the category. It helps SEO and
+                makes category links readable.
+              </p>
 
-                <TooltipContent className="max-w-xs flex flex-col text-left">
-                  <p>
-                    Slug is the clean URL name of the category. It helps SEO and
-                    makes category links readable.
-                  </p>
-                  <p className="mt-2">
-                    Example: <strong>/products?category=formal-shirt</strong>
-                  </p>
-                  <p className="mt-2">
-                    Use lowercase letters, numbers, and hyphens only. Example:
-                    <strong> formal-shirt</strong>
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+              <p className="mt-2">
+                Example: <strong>/products?category=formal-shirt</strong>
+              </p>
+
+              <p className="mt-2">
+                Use lowercase letters, numbers, and hyphens only. Example:{" "}
+                <strong>formal-shirt</strong>
+              </p>
+            </InfoTooltip>
           </div>
 
           <Input
@@ -168,7 +154,11 @@ export function CategoryForm({
         Active category
       </label>
 
-      <Button disabled={isPending} type="submit" className="h-10 rounded-full px-6 text-sm">
+      <Button
+        disabled={isPending}
+        type="submit"
+        className="h-10 rounded-full px-6 text-sm"
+      >
         {isPending
           ? "Saving..."
           : category

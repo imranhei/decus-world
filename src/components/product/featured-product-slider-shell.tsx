@@ -55,7 +55,7 @@ export function FeaturedProductSliderShell({
 
   return (
     <div
-      className="group relative"
+      className="relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -107,7 +107,7 @@ export function FeaturedProductSlide({
         delay: index * 0.06,
         ease: "easeOut",
       }}
-      className="min-w-[calc(50%-8px)] sm:min-w-65 lg:min-w-70"
+      className="min-w-[calc(50%-8px)] sm:min-w-65 lg:min-w-70 py-4"
     >
       {children}
     </motion.div>
