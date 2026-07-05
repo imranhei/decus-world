@@ -32,12 +32,11 @@ export function InfoTooltip({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <button
-              type="button"
+            <div
               className={`hidden sm:inline-flex h-4 w-4 items-center justify-center text-muted-foreground ${className ?? ""}`}
             >
               <Info className={`h-3.5 w-3.5 ${iconClassName ?? ""}`} />
-            </button>
+            </div>
           </TooltipTrigger>
 
           <TooltipContent className="max-w-xs text-left flex flex-col text-xs">
@@ -49,15 +48,13 @@ export function InfoTooltip({
       {/* Mobile */}
       <Popover>
         <PopoverTrigger>
-          <Button
-            variant="ghost"
-            size="icon"
+          <div
             className={`inline-flex size-4 p-0 sm:hidden ${className ?? ""}`}
           >
             <Info
               className={`h-3.5 w-3.5 text-muted-foreground ${iconClassName ?? ""}`}
             />
-          </Button>
+          </div>
         </PopoverTrigger>
 
         <PopoverContent side="top" className="max-w-xs text-xs text-left bg-black/90 text-white">
