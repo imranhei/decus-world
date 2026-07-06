@@ -63,10 +63,12 @@ export function ProductForm({ categories, product }: ProductFormProps) {
   );
 
   const [images, setImages] = useState<ProductImageInput[]>(
-    product?.images.map((image) => ({
-      url: image.url,
-      publicId: image.publicId || undefined,
-    })) || [],
+    product?.images?.length
+      ? product.images.map((image) => ({
+          url: image.url,
+          publicId: image.publicId || undefined,
+        }))
+      : [],
   );
 
   function addVariantRow() {

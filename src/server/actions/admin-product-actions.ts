@@ -46,7 +46,7 @@ export async function createProductAction(values: unknown) {
       name: data.name,
       slug: data.slug,
       description: data.description,
-      shortDescription: data.shortDescription,
+      shortDescription: data.shortDescription || null,
       categoryId: data.categoryId,
       price: data.price,
       compareAtPrice: data.compareAtPrice || null,
@@ -55,13 +55,13 @@ export async function createProductAction(values: unknown) {
       isFeatured: data.isFeatured,
       isNewArrival: data.isNewArrival,
       isBestSeller: data.isBestSeller,
-      metaTitle: data.metaTitle,
-      metaDescription: data.metaDescription,
+      metaTitle: data.metaTitle || null,
+      metaDescription: data.metaDescription || null,
 
       images: {
         create: data.images.map((image, index) => ({
           url: image.url,
-          publicId: image.publicId,
+          publicId: image.publicId || null,
           altText: data.name,
           position: index,
         })),
@@ -79,6 +79,7 @@ export async function createProductAction(values: unknown) {
           inventory: {
             create: {
               quantity: variant.quantity,
+              reserved: 0,
             },
           },
         })),
@@ -97,73 +98,103 @@ export async function updateProductAction(productId: string, values: unknown) {
   const parsed = productSchema.safeParse(values);
 
   if (!parsed.success) {
-    return { success: false, message: "Invalid product data" };
+    return {
+      success: false,
+      message: "Invalid product data",
+    };
   }
 
   const data = parsed.data;
 
-  await prisma.$transaction(async (tx) => {
-    await tx.product.update({
-      where: { id: productId },
-      data: {
-        name: data.name,
-        slug: data.slug,
-        description: data.description,
-        shortDescription: data.shortDescription,
-        categoryId: data.categoryId,
-        price: data.price,
-        compareAtPrice: data.compareAtPrice || null,
-        sku: data.sku || null,
-        status: data.status,
-        isFeatured: data.isFeatured,
-        isNewArrival: data.isNewArrival,
-        isBestSeller: data.isBestSeller,
-        metaTitle: data.metaTitle,
-        metaDescription: data.metaDescription,
-      },
+  const oldImages = await prisma.productImage.findMany({
+    where: { productId },
+    select: {
+      publicId: true,
+    },
+  });
+
+  const newPublicIds = new Set(
+    data.images.map((image) => image.publicId).filter(Boolean),
+  );
+
+  const removedPublicIds = oldImages
+    .map((image) => image.publicId)
+    .filter((publicId): publicId is string => {
+      return Boolean(publicId) && !newPublicIds.has(publicId as string);
     });
 
-    await tx.productImage.deleteMany({
-      where: { productId },
-    });
+  await prisma.product.update({
+    where: { id: productId },
+    data: {
+      name: data.name,
+      slug: data.slug,
+      description: data.description,
+      shortDescription: data.shortDescription || null,
+      categoryId: data.categoryId,
+      price: data.price,
+      compareAtPrice: data.compareAtPrice || null,
+      sku: data.sku || null,
+      status: data.status,
+      isFeatured: data.isFeatured,
+      isNewArrival: data.isNewArrival,
+      isBestSeller: data.isBestSeller,
+      metaTitle: data.metaTitle || null,
+      metaDescription: data.metaDescription || null,
+    },
+  });
 
-    await tx.productImage.createMany({
+  await prisma.productImage.deleteMany({
+    where: { productId },
+  });
+
+  if (data.images.length) {
+    await prisma.productImage.createMany({
       data: data.images.map((image, index) => ({
         productId,
         url: image.url,
-        publicId: image.publicId,
+        publicId: image.publicId || null,
         altText: data.name,
         position: index,
       })),
     });
+  }
 
-    await tx.productVariant.deleteMany({
-      where: { productId },
-    });
-
-    for (const variant of data.variants) {
-      await tx.productVariant.create({
-        data: {
-          productId,
-          size: variant.size || null,
-          color: variant.color || null,
-          sku:
-            variant.sku ||
-            `${data.slug}-${variant.size || "DEFAULT"}-${variant.color || "DEFAULT"}`
-              .toUpperCase()
-              .replace(/\s+/g, "-"),
-          inventory: {
-            create: {
-              quantity: variant.quantity,
-            },
-          },
-        },
-      });
-    }
+  await prisma.productVariant.deleteMany({
+    where: { productId },
   });
 
+  for (const variant of data.variants) {
+    await prisma.productVariant.create({
+      data: {
+        productId,
+        size: variant.size || null,
+        color: variant.color || null,
+        sku:
+          variant.sku ||
+          `${data.slug}-${variant.size || "DEFAULT"}-${variant.color || "DEFAULT"}`
+            .toUpperCase()
+            .replace(/\s+/g, "-"),
+        inventory: {
+          create: {
+            quantity: variant.quantity,
+            reserved: 0,
+          },
+        },
+      },
+    });
+  }
+
+  await Promise.allSettled(
+    removedPublicIds.map((publicId) =>
+      deleteCloudinaryImageAction(publicId),
+    ),
+  );
+
   revalidatePath("/admin/products");
+  revalidatePath(`/admin/products/${productId}/edit`);
   revalidatePath("/products");
+  revalidatePath(`/products/${data.slug}`);
+
   redirect("/admin/products");
 }
 

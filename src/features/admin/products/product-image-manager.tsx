@@ -1,9 +1,9 @@
 "use client";
 
+import { ImagePlus, Loader2, X } from "lucide-react";
+import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useEffect, useRef, useTransition } from "react";
-import { CldUploadWidget } from "next-cloudinary";
-import { ImagePlus, Loader2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { deleteCloudinaryImageAction } from "@/server/actions/admin-product-actions";
@@ -38,14 +38,14 @@ export function ProductImageManager({
   const savedRef = useRef(false);
 
   useEffect(() => {
-  return () => {
-    if (isSaved) return;
+    return () => {
+      if (isSaved) return;
 
-    uploadedPublicIdsRef.current.forEach((publicId) => {
-      void deleteCloudinaryImageAction(publicId);
-    });
-  };
-}, [isSaved]);
+      uploadedPublicIdsRef.current.forEach((publicId) => {
+        void deleteCloudinaryImageAction(publicId);
+      });
+    };
+  }, [isSaved]);
 
   function markAsSaved() {
     savedRef.current = true;
@@ -99,7 +99,12 @@ export function ProductImageManager({
         }}
       >
         {({ open }) => (
-          <Button type="button" variant="outline" onClick={() => open()} className="h-8 rounded-full px-4 text-sm">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => open()}
+            className="h-8 rounded-full px-4 text-sm"
+          >
             <ImagePlus className="mr-2 h-4 w-4" />
             Upload Images
           </Button>
@@ -115,11 +120,16 @@ export function ProductImageManager({
 
       {images.length ? (
         <div className="grid gap-3 sm:grid-cols-3 md:grid-cols-4">
-          {images.map((image) => (
+          {images.map((image, index) => (
             <div
               key={`${image.publicId}-${image.url}`}
               className="relative aspect-square overflow-hidden rounded-xl border bg-muted"
             >
+              {index === 0 ? (
+                <span className="absolute left-2 top-2 rounded-full bg-black px-2 py-1 text-xs text-white">
+                  Main
+                </span>
+              ) : null}
               <Image
                 src={image.url}
                 alt="Product image"

@@ -57,7 +57,7 @@ export default async function AdminReviewsPage() {
                       await approveReviewAction(review.id);
                     }}
                   >
-                    <Button size="sm" className="h-8 rounded-full px-6 text-xs">
+                    <Button size="sm" className="h-8 rounded-full px-6 text-xs" type="submit">
                       <Check /> Approve
                     </Button>
                   </form>
@@ -69,7 +69,7 @@ export default async function AdminReviewsPage() {
                     await rejectReviewAction(review.id);
                   }}
                 >
-                  <Button size="sm" variant="destructive" className="h-8 rounded-full px-6 text-xs flex items-center gap-2">
+                  <Button size="sm" variant="destructive" className="h-8 rounded-full px-6 text-xs flex items-center gap-2" type="submit">
                     <Trash2/> Delete
                   </Button>
                 </form>

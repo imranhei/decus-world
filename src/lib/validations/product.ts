@@ -7,6 +7,11 @@ export const productVariantSchema = z.object({
   quantity: z.coerce.number().int().min(0),
 });
 
+export const productImageSchema = z.object({
+  url: z.string().url(),
+  publicId: z.string().optional(),
+});
+
 export const productSchema = z.object({
   name: z.string().min(2),
   slug: z.string().min(2),
@@ -17,14 +22,7 @@ export const productSchema = z.object({
   compareAtPrice: z.coerce.number().optional(),
   sku: z.string().optional(),
   status: z.enum(["DRAFT", "ACTIVE", "ARCHIVED"]),
-  images: z
-    .array(
-      z.object({
-        url: z.string().url(),
-        publicId: z.string().optional(),
-      })
-    )
-    .default([]),
+  images: z.array(productImageSchema).default([]),
   variants: z.array(productVariantSchema).min(1, "At least one variant is required"),
   isFeatured: z.coerce.boolean().default(false),
   isNewArrival: z.coerce.boolean().default(false),

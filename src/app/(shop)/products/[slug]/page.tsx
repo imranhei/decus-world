@@ -1,6 +1,5 @@
 import SizeChart from "@/assets/size-chart.png";
 import { Ruler } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -9,6 +8,7 @@ import { ImagePreviewDialog } from "@/components/shared/image-preview-dialog";
 import { StarRating } from "@/components/shared/star-rating";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { ProductImageGallery } from "@/features/products/product-image-gallery";
 import { ProductPurchasePanel } from "@/features/products/product-purchase-panel";
 import { ReviewForm } from "@/features/reviews/review-form";
 import { WishlistButton } from "@/features/wishlist/wishlist-button";
@@ -16,7 +16,6 @@ import { createBreadcrumbJsonLd, createProductJsonLd } from "@/lib/seo";
 import { getProductBySlug } from "@/server/queries/product-queries";
 import { isProductWishlisted } from "@/server/queries/wishlist-queries";
 import { auth } from "../../../../../auth";
-import { getCloudinaryImageUrl } from "@/lib/cloudinary-image";
 
 type ProductDetailsPageProps = {
   params: Promise<{
@@ -72,16 +71,6 @@ export default async function ProductDetailsPage({
   const isWishlisted = await isProductWishlisted(product.id);
   const mainImage = product.images[0];
 
-  const sizes = [
-    ...new Set(product.variants.map((variant) => variant.size).filter(Boolean)),
-  ];
-
-  const colors = [
-    ...new Set(
-      product.variants.map((variant) => variant.color).filter(Boolean),
-    ),
-  ];
-
   const averageRating =
     product.reviews.length > 0
       ? product.reviews.reduce((total, review) => total + review.rating, 0) /
@@ -135,49 +124,11 @@ export default async function ProductDetailsPage({
 
         <section className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr]">
           <section>
-            <div className="relative overflow-hidden bg-muted">
-              {product.isNewArrival ? (
-                <div className="absolute left-0 top-0 z-10 bg-red-500 px-4 py-1.5 text-sm font-bold text-white">
-                  New
-                </div>
-              ) : null}
-
-              <div className="relative aspect-4/5 w-full">
-                {mainImage ? (
-                  <Image
-                    src={getCloudinaryImageUrl(mainImage.url, 600, 600)}
-                    alt={mainImage.altText || product.name}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-muted-foreground">
-                    No image
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {product.images.length > 1 ? (
-              <div className="mt-5 grid grid-cols-4 gap-3 sm:grid-cols-5">
-                {product.images.map((image, index) => (
-                  <div
-                    key={image.id}
-                    className={`relative aspect-square overflow-hidden border bg-muted ${
-                      index === 0 ? "border-2 border-black" : "border-border"
-                    }`}
-                  >
-                    <Image
-                      src={image.url}
-                      alt={image.altText || product.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : null}
+            <ProductImageGallery
+              images={product.images}
+              productName={product.name}
+              isNewArrival={product.isNewArrival}
+            />
           </section>
 
           <section className="lg:sticky lg:top-24 lg:h-fit">
