@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
 import { AppProvider } from "@/providers/app-provider";
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Geist, Geist_Mono, Inter } from "next/font/google";
+import { Cormorant_Garamond, Geist, Geist_Mono, Inter, Jost } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
@@ -19,6 +19,12 @@ const geistMono = Geist_Mono({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+});
+
+const jost = Jost({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
 });
 
 const cormorant = Cormorant_Garamond({
@@ -65,7 +71,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        className={`${inter.variable} ${cormorant.variable} font-sans antialiased`}
+        className={`${jost.variable} ${cormorant.variable} font-sans antialiased`}
       >
         <NextTopLoader
           color="#111827"

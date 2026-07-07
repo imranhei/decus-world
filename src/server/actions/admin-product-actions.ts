@@ -185,9 +185,7 @@ export async function updateProductAction(productId: string, values: unknown) {
   }
 
   await Promise.allSettled(
-    removedPublicIds.map((publicId) =>
-      deleteCloudinaryImageAction(publicId),
-    ),
+    removedPublicIds.map((publicId) => deleteCloudinaryImageAction(publicId)),
   );
 
   revalidatePath("/admin/products");
@@ -198,18 +196,60 @@ export async function updateProductAction(productId: string, values: unknown) {
   redirect("/admin/products");
 }
 
-export async function deleteProductAction(productId: string) {
+export async function archiveProductAction(productId: string) {
   await requireAdmin();
 
   await prisma.product.update({
-    where: { id: productId },
-    data: { status: "ARCHIVED" },
+    where: {
+      id: productId,
+    },
+    data: {
+      status: "ARCHIVED",
+    },
   });
 
   revalidatePath("/admin/products");
   revalidatePath("/products");
 
-  return { success: true };
+  return {
+    success: true,
+    message: "Product archived successfully.",
+  };
+}
+
+export async function deleteProductAction(productId: string) {
+  await requireAdmin();
+
+  const orderItem = await prisma.orderItem.findFirst({
+    where: {
+      productId,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (orderItem) {
+    return {
+      success: false,
+      message:
+        "This product has already been ordered and cannot be deleted. Archive it instead.",
+    };
+  }
+
+  await prisma.product.delete({
+    where: {
+      id: productId,
+    },
+  });
+
+  revalidatePath("/admin/products");
+  revalidatePath("/products");
+
+  return {
+    success: true,
+    message: "Product deleted successfully.",
+  };
 }
 
 export async function deleteCloudinaryImageAction(publicId: string) {

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -190,7 +190,7 @@ export function ProductPurchasePanel({
         </p>
       </div>
 
-      <div className="space-y-3 grid grid-cols-2">
+      <div className="space-y-3 flex gap-4">
         <AddToCartButton
           isLoggedIn={isLoggedIn}
           quantity={quantity}
@@ -207,11 +207,12 @@ export function ProductPurchasePanel({
 
         <Button
           type="button"
+          variant="outline"
           disabled={isOutOfStock}
           onClick={handleBuyNow}
-          className="h-10 rounded-full text-sm"
+          className="h-10 rounded-full text-sm flex-1"
         >
-          <ShoppingBag className="mr-2 h-4 w-4" />
+          <ShoppingCart className="mr-1 h-4 w-4" />
           Buy it now
         </Button>
       </div>

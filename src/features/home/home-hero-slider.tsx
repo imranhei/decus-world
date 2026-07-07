@@ -62,7 +62,7 @@ export function HomeHeroSlider({ banners }: HomeHeroSliderProps) {
                 initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}
-                className="text-sm font-medium uppercase tracking-[0.3em] text-zinc-400"
+                className="text-sm font-medium font-mono! uppercase tracking-[0.3em] text-zinc-400"
               >
                 {banner.title}
               </motion.p>

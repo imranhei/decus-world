@@ -122,7 +122,7 @@ export function AddToCartButton({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="flex-1">
       {showVariantSelector ? (
         <div>
           <p className="mb-2 text-sm font-medium">Choose Variant</p>
