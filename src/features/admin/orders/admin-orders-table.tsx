@@ -32,7 +32,7 @@ export function AdminOrdersTable({ orders }: AdminOrdersTableProps) {
       {/* Desktop / Tablet Table */}
       <div className="hidden overflow-hidden rounded-xl border bg-background md:block">
         <div className="overflow-x-auto">
-          <table className="min-w-225 w-full text-sm">
+          <table className="min-w-200 w-full text-sm">
             <thead className="border-b bg-muted">
               <tr>
                 <th className="px-4 py-3 text-left">Order</th>
@@ -41,7 +41,7 @@ export function AdminOrdersTable({ orders }: AdminOrdersTableProps) {
                 <th className="px-4 py-3 text-left">Payment</th>
                 <th className="px-4 py-3 text-left">Total</th>
                 <th className="px-4 py-3 text-left">Date</th>
-                <th className="px-4 py-3 text-right">Action</th>
+                {/* <th className="px-4 py-3 text-right">Action</th> */}
               </tr>
             </thead>
 
@@ -91,11 +91,11 @@ export function AdminOrdersTable({ orders }: AdminOrdersTableProps) {
                     {new Date(order.createdAt).toLocaleDateString()}
                   </td>
 
-                  <td className="px-4 py-3 text-right">
+                  {/* <td className="px-4 py-3 text-right">
                     <TableActionMenu
                       viewHref={`/admin/orders/${order.orderNumber}`}
                     />
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

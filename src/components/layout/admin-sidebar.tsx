@@ -15,6 +15,8 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import dWLogo from "@/assets/dw_bold-03.png";
+import NextImage from "next/image";
 import { usePathname } from "next/navigation";
 
 import { LogoutButton } from "@/components/shared/logout-button";
@@ -103,8 +105,8 @@ export function AdminSidebar() {
         `}
       >
         <div className="flex h-16 items-center justify-between border-b border-white/10 px-6">
-          <Link href="/admin/dashboard" className="text-xl font-bold">
-            Decus World
+          <Link href="/admin/dashboard" className="text-xl font-semibold flex items-center gap-2">
+            <NextImage src={dWLogo} alt="Decus World" height={40} width={40} className="invert" />Decus World
           </Link>
 
           <button

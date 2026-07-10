@@ -13,8 +13,8 @@ export async function AdminTopbar() {
         <p className="text-muted-foreground sm:text-base text-sm">Admin Panel</p>
       </div>
 
-      <Button variant="outline" className="sm:h-10 h-7 rounded-full sm:px-6 px-4 sm:text-sm text-xs gap-2 text-teal-500">
-       <Store className="sm:size-4 size-3.5" /> <Link href="/">View Store</Link>
+      <Button variant="outline" className="h-10 rounded-full sm:px-6 px-4 text-sm gap-2 text-teal-500">
+       <Store className="size-4" /> <Link href="/">View Store</Link>
       </Button>
     </header>
   );

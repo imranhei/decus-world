@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
 import { FaFacebookF, FaFacebookMessenger, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import dWLogo from "@/assets/dw-03.png";
+import Image from "next/image";
 
 export default function ShopFooter() {
   return (
     <footer className="bg-[#0A0A0A] text-gray-400 border-t border-gray-800/50">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 lg:px-6">
         {/* Newsletter Section */}
         {/* <div className="grid gap-8 border-b border-gray-800 py-12 md:grid-cols-2 md:items-center">
           <div>
@@ -33,12 +35,10 @@ export default function ShopFooter() {
         </div> */}
 
         {/* Main Footer Content */}
-        <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12">
+        <div className="grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-12">
           {/* Brand - Spans 4 columns on large screens */}
-          <div className="lg:col-span-4">
-            <h2 className="text-3xl font-light tracking-[0.4em] text-white">
-              DW
-            </h2>
+          <div className="lg:col-span-5">
+            <Image src={dWLogo} alt="Decus World" height={40} width={40} className="invert" />
             <h3 className="mt-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#C8A46A]">
               Decus World
             </h3>
@@ -78,7 +78,7 @@ export default function ShopFooter() {
           </div> */}
 
           {/* Customer Service - Spans 2 columns */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <h4 className="mb-6 text-xs font-semibold uppercase tracking-widest text-gray-300">
               Customer Care
             </h4>

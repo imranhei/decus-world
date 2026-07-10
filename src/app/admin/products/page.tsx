@@ -107,8 +107,12 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
                   <td className="px-4 py-3">{product.category.name}</td>
 
-                  <td className="px-4 py-3 font-semibold">
-                    ৳{Number(product.price).toLocaleString()}
+                  <td className="px-4 py-3 font-semibold flex flex-col">
+                    <span>৳{Number(product.price).toLocaleString()}</span>
+                    <span className="text-xs text-muted-foreground line-through">
+                      {product.compareAtPrice &&
+                        `৳${Number(product.compareAtPrice).toLocaleString()}`}
+                    </span>
                   </td>
 
                   <td className="px-4 py-3">
@@ -133,7 +137,13 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                   </td>
 
                   <td className="px-4 py-3">
-                    <Badge>{product.status}</Badge>
+                    <Badge
+                      variant={
+                        product.status === "ACTIVE" ? "active" : "destructive"
+                      }
+                    >
+                      {product.status}
+                    </Badge>
                   </td>
 
                   <td className="px-4 py-3 text-right">

@@ -106,7 +106,7 @@ export function ProductActionMenu({ productId, productName }: Props) {
           {/* <DropdownMenuSeparator /> */}
 
           <DropdownMenuItem
-            className="text-red-600 flex items-center cursor-pointer"
+            className="text-red-600 flex items-center"
             onClick={(e) => {
               e.preventDefault();
               setDeleteOpen(true);

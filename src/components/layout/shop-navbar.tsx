@@ -1,6 +1,7 @@
 import { LogOut, Menu, User } from "lucide-react";
 import Link from "next/link";
 
+import dWLogo from "@/assets/dw_bold-03.png";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -12,6 +13,7 @@ import {
 import { CartIconButton } from "@/features/cart/cart-icon-button";
 import { logoutAction } from "@/server/actions/auth-actions";
 import { getCurrentUserCartCount } from "@/server/queries/cart-queries";
+import Image from "next/image";
 import { auth } from "../../../auth";
 import { ShopNavLinks } from "./shop-nav-links";
 
@@ -29,7 +31,8 @@ export async function ShopNavbar() {
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
       <div className="flex max-w-7xl h-16 mx-auto items-center justify-between gap-3 px-4">
         <Link href="/" className="text-xl font-bold flex items-center gap-2">
-          D|W<span className="sm:block hidden">Decus World</span>
+          <Image src={dWLogo} alt="Decus World" height={40} width={40} />
+          <span className="sm:block hidden">Decus World</span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
